@@ -112,3 +112,6 @@ dmypy.json
 
 # Ignore mounts
 logs
+
+# Ignore vs config files
+.vs
