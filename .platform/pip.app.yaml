@@ -35,7 +35,7 @@ web:
     upstream:
         socket_family: unix
     commands:
-        start: "gunicorn -w 4 -b unix:$SOCKET myapp.wsgi:application"
+        start: "gunicorn -w 4 -b unix:$SOCKET xiloteca.wsgi:application"
     locations:
         "/":
             passthru: true

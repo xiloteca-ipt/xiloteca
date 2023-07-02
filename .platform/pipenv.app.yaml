@@ -40,7 +40,7 @@ web:
     upstream:
         socket_family: unix
     commands:
-        start: "pipenv run gunicorn -w 4 -b unix:$SOCKET myapp.wsgi:application"
+        start: "pipenv run gunicorn -w 4 -b unix:$SOCKET xiloteca.wsgi:application"
     locations:
         "/":
             passthru: true
