@@ -8,3 +8,24 @@ def index(request):
         'message': "Hello, world!",
     }
     return HttpResponse(template.render(context, request))
+
+def search(request):
+    template = loader.get_template('search.html')
+    context = {
+        'message': "Página de busca com filtros",
+    }
+    return HttpResponse(template.render(context, request))
+
+def results(request):
+    template = loader.get_template('results.html')
+    context = {
+        'message': "Nenhum resultado encontrado.",
+    }
+    return HttpResponse(template.render(context, request))
+
+def details(request):
+    template = loader.get_template('details.html')
+    context = {
+        'message': "Esta é uma página de detalhes das madeiras",
+    }
+    return HttpResponse(template.render(context, request))
