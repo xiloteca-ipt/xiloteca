@@ -1,6 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
+from.models import 
+
 from.models import Category, Banner, Determinador, Conteudo, MadeiraFoto, Madeira, Ocorrencia, Familia,Fonte,Genero,Item,ItemConteudo,MadeiraItem,MadeiraItemFonte,MadeiraItemObsFonte,MadeiraItemObservacao,MadeiraNomeCientifico,MadeiraNomeInternFonte,MadeiraNomeInternOcorr,MadeiraNomeInternacional,MadeiraNomePopular,MadeiraOcorrencia,Referencia,TipoFoto,TipoOcorrencia
 
 admin.site.register(Category)

@@ -12,6 +12,8 @@ class Category(models.Model):
 
     def __str__(self):
         return self().title
+    
+from django.db import models
 
 class Determinador(models.Model):
     cod_determinador = models.AutoField(db_column='Cod_Determinador', primary_key=True)  # Field name made lowercase.

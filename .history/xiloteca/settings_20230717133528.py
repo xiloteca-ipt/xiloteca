@@ -76,12 +76,12 @@ WSGI_APPLICATION = 'xiloteca.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    #'default': {
-    #    'ENGINE': 'django.db.backends.sqlite3',
-    #    'NAME': BASE_DIR / 'db.sqlite3',
-    #},
-
     'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+
+    'SQL_Julio': {
          'ENGINE': 'mssql',
         'NAME': 'Madeiras',
         'HOST': 'SPON019400028\SQLEXPRESS',
@@ -91,6 +91,7 @@ DATABASES = {
            'driver': 'ODBC Driver 13 for SQL Server',
         },
     },
+     },
 }
 
 
