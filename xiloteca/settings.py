@@ -81,9 +81,13 @@ WSGI_APPLICATION = 'xiloteca.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': 'xiloteca',
+                'USER': 'xiloteca',
+                'PASSWORD': 'xiloteca',
+                'HOST': '34.139.74.112',
+                'PORT': 3306,
+            }
 }
 
 # Password validation
@@ -165,12 +169,12 @@ if (os.getenv('PLATFORM_APPLICATION_NAME') is not None):
         db_settings = platformRelationships[PLATFORMSH_DB_RELATIONSHIP][0]
         DATABASES = {
             'default': {
-                'ENGINE': 'django.db.backends.postgresql',
-                'NAME': db_settings['path'],
-                'USER': db_settings['username'],
-                'PASSWORD': db_settings['password'],
-                'HOST': db_settings['host'],
-                'PORT': db_settings['port'],
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': 'xiloteca',
+                'USER': 'xiloteca',
+                'PASSWORD': 'xiloteca',
+                'HOST': '34.139.74.112',
+                'PORT': 3306,
             },
             'sqlite': {
                 'ENGINE': 'django.db.backends.sqlite3',
