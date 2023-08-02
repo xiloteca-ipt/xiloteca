@@ -1,29 +1,4 @@
--- phpMyAdmin SQL Dump
--- version 3.2.0
--- http://www.phpmyadmin.net
---
--- Servidor: localhost
--- Tempo de Geração: Abr 10, 2023 as 10:44 AM
--- Versão do Servidor: 5.5.59
--- Versão do PHP: 5.6.33-0+deb8u1
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Banco de Dados: `madeira`
---
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Conteudo`
---
 
 CREATE TABLE IF NOT EXISTS `Conteudo` (
   `Cod_Conteudo` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -31,9 +6,225 @@ CREATE TABLE IF NOT EXISTS `Conteudo` (
   PRIMARY KEY (`Cod_Conteudo`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=112 ;
 
---
--- Extraindo dados da tabela `Conteudo`
---
+CREATE TABLE IF NOT EXISTS `Determinador` (
+  `Cod_Determinador` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `Nome_Determinador` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`Cod_Determinador`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
+
+CREATE TABLE IF NOT EXISTS `Especie` (
+  `Cod_Especie` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `Nome_Especie` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`Cod_Especie`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=68 ;
+
+CREATE TABLE IF NOT EXISTS `Familia` (
+  `Cod_Familia` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `Nome_Familia` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`Cod_Familia`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+
+CREATE TABLE IF NOT EXISTS `Referencia` (
+  `Cod_Referencia` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `Nome_Referencia` varchar(50) DEFAULT NULL,
+  `Nome_Completo_Referencia` varchar(150) DEFAULT NULL,
+  `Desc_Endereco_Site` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`Cod_Referencia`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+
+CREATE TABLE IF NOT EXISTS `Fonte` (
+  `Cod_Fonte` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Referencia` int(10) unsigned NOT NULL DEFAULT '0',
+  `Desc_Num_Fonte` varchar(50) DEFAULT NULL,
+  `Desc_Obs_Fonte` text,
+  PRIMARY KEY (`Cod_Fonte`),
+  FOREIGN KEY (`Cod_Referencia`) REFERENCES `Referencia`(`Cod_Referencia`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Genero` (
+  `Cod_Genero` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `Nome_Genero` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`Cod_Genero`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=78 ;
+
+CREATE TABLE IF NOT EXISTS `Item` (
+  `Cod_Item` int(10) unsigned NOT NULL DEFAULT '0',
+  `Nome_Item` varchar(200) DEFAULT NULL,
+  `Cod_Item_Pai` int(10) unsigned DEFAULT NULL,
+  `Cod_Nivel_Item` int(10) unsigned DEFAULT NULL,
+  `Cod_Tipo_Item` char(3) DEFAULT NULL,
+  `Num_Parte_Inteira` decimal(8,0) DEFAULT NULL,
+  `Num_Parte_Decimal` decimal(2,0) DEFAULT NULL,
+  `Desc_Unidade_Medida` varchar(50) DEFAULT NULL,
+  `Ind_Exibir_Ficha` tinyint(1) unsigned DEFAULT NULL,
+  `Cod_Tipo_Pesquisa` char(3) DEFAULT NULL,
+  `Num_Ordem_Item` int(10) unsigned DEFAULT NULL,
+  `Desc_Obs_Item` text,
+  `Cod_Status_Item` char(1) DEFAULT NULL,
+  `Ind_Exibir_Pesquisa` tinyint(1) unsigned DEFAULT NULL,
+  `Cod_Tipo_Parametro` char(3) DEFAULT NULL,
+  PRIMARY KEY (`Cod_Item`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Tipo_Foto` (
+  `Cod_Tipo_Foto` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `Desc_Tipo_Foto` varchar(100) DEFAULT NULL,
+  `Num_Ordem_Tipo_Foto` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`Cod_Tipo_Foto`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+CREATE TABLE IF NOT EXISTS `Tipo_Ocorrencia` (
+  `Cod_Tipo_Ocorrencia` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `Desc_Tipo_Ocorrencia` varchar(80) DEFAULT NULL,
+  PRIMARY KEY (`Cod_Tipo_Ocorrencia`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+CREATE TABLE IF NOT EXISTS `Madeira` (
+  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
+  `Data_Cadastro` date DEFAULT NULL,
+  `Desc_Obs_Madeira` text,
+  `Desc_Obs_Ocorrencia` text,
+  `Desc_Obs_Nome_Cientifico` text,
+  `Cod_Status_Madeira` char(1) DEFAULT NULL,
+  PRIMARY KEY (`Cod_Madeira`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Item_Conteudo` (
+  `Cod_Item` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Conteudo` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Cod_Item`,`Cod_Conteudo`),
+  FOREIGN KEY (`Cod_Item`) REFERENCES `Item`(`Cod_Item`),
+  FOREIGN KEY (`Cod_Conteudo`) REFERENCES `Conteudo`(`Cod_Conteudo`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Madeira_Foto` (
+  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Foto` int(10) unsigned NOT NULL DEFAULT '0',
+  `Nome_Arquivo_Foto` varchar(100) DEFAULT NULL,
+  `Cod_Tipo_Foto` int(10) unsigned DEFAULT NULL,
+  `Desc_Obs_Foto` varchar(200) DEFAULT NULL,
+  `Nome_Arquivo_Zoom` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`Cod_Madeira`,`Cod_Foto`),
+  FOREIGN KEY (`Cod_Madeira`) REFERENCES `Madeira`(`Cod_Madeira`),
+  FOREIGN KEY (`Cod_Tipo_Foto`) REFERENCES `Tipo_Foto`(`Cod_Tipo_Foto`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Madeira_Item` (
+  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Item` int(10) unsigned NOT NULL DEFAULT '0',
+  `Num_Linha` int(10) unsigned NOT NULL DEFAULT '0',
+  `Desc_Item` text,
+  `Valor_Inteiro` decimal(8,0) DEFAULT NULL,
+  `Valor_Decimal` decimal(2,0) DEFAULT NULL,
+  `Cod_Conteudo` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`Cod_Madeira`,`Cod_Item`,`Num_Linha`),
+  FOREIGN KEY (`Cod_Madeira`) REFERENCES `Madeira`(`Cod_Madeira`),
+  FOREIGN KEY (`Cod_Item`) REFERENCES `Item`(`Cod_Item`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Madeira_Item_Fonte` (
+  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Item` int(10) unsigned NOT NULL DEFAULT '0',
+  `Num_Linha` int(10) unsigned NOT NULL DEFAULT '0',
+  `Num_Ordem_Fonte` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Fonte` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`Cod_Madeira`,`Cod_Item`,`Num_Linha`,`Num_Ordem_Fonte`),
+  FOREIGN KEY (`Cod_Madeira`) REFERENCES `Madeira`(`Cod_Madeira`),
+  FOREIGN KEY (`Cod_Item`) REFERENCES `Item`(`Cod_Item`),
+  FOREIGN KEY (`Cod_Fonte`) REFERENCES `Fonte`(`Cod_Fonte`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Madeira_Item_Observacao` (
+  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Item` int(10) unsigned NOT NULL DEFAULT '0',
+  `Num_Linha` int(10) unsigned NOT NULL DEFAULT '0',
+  `Num_Obs` int(10) unsigned NOT NULL DEFAULT '0',
+  `Desc_Obs` text,
+  PRIMARY KEY (`Cod_Madeira`,`Cod_Item`,`Num_Linha`,`Num_Obs`),
+  FOREIGN KEY (`Cod_Madeira`) REFERENCES `Madeira`(`Cod_Madeira`),
+  FOREIGN KEY (`Cod_Item`) REFERENCES `Item`(`Cod_Item`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Madeira_Item_Obs_Fonte` (
+  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Item` int(10) unsigned NOT NULL DEFAULT '0',
+  `Num_Linha` int(10) unsigned NOT NULL DEFAULT '0',
+  `Num_Obs` int(10) unsigned NOT NULL DEFAULT '0',
+  `Num_Ordem_Fonte` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Fonte` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`Cod_Madeira`,`Cod_Item`,`Num_Linha`,`Num_Obs`,`Num_Ordem_Fonte`),
+  FOREIGN KEY (`Cod_Madeira`) REFERENCES `Madeira`(`Cod_Madeira`),
+  FOREIGN KEY (`Cod_Item`) REFERENCES `Item`(`Cod_Item`),
+  FOREIGN KEY (`Cod_Fonte`) REFERENCES `Fonte`(`Cod_Fonte`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Madeira_Nome_Cientifico` (
+  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Nome_Cientifico` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Familia` int(10) unsigned DEFAULT NULL,
+  `Cod_Genero` int(10) unsigned DEFAULT NULL,
+  `Cod_Especie` int(10) unsigned DEFAULT NULL,
+  `Cod_Determinador` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`Cod_Madeira`,`Cod_Nome_Cientifico`),
+  FOREIGN KEY (`Cod_Madeira`) REFERENCES `Madeira`(`Cod_Madeira`),
+  FOREIGN KEY (`Cod_Familia`) REFERENCES `Familia`(`Cod_Familia`),
+  FOREIGN KEY (`Cod_Genero`) REFERENCES `Genero`(`Cod_Genero`),
+  FOREIGN KEY (`Cod_Especie`) REFERENCES `Especie`(`Cod_Especie`),
+  FOREIGN KEY (`Cod_Determinador`) REFERENCES `Determinador`(`Cod_Determinador`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Madeira_Nome_Internacional` (
+  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Nome_Internacional` int(10) unsigned NOT NULL DEFAULT '0',
+  `Nome_Internacional` varchar(80) DEFAULT NULL,
+  PRIMARY KEY (`Cod_Madeira`, `Cod_Nome_Internacional`),
+  FOREIGN KEY (`Cod_Madeira`) REFERENCES `Madeira`(`Cod_Madeira`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Madeira_Nome_Intern_Fonte` (
+  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Nome_Internacional` int(10) unsigned NOT NULL DEFAULT '0',
+  `Num_Ordem_Fonte` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Fonte` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`Cod_Madeira`,`Cod_Nome_Internacional`,`Num_Ordem_Fonte`),
+  FOREIGN KEY (`Cod_Madeira`, `Cod_Nome_Internacional`) REFERENCES `Madeira_Nome_Internacional`(`Cod_Madeira`, `Cod_Nome_Internacional`),
+  FOREIGN KEY (`Cod_Fonte`) REFERENCES `Fonte`(`Cod_Fonte`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Ocorrencia` (
+  `Cod_Ocorrencia` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `Nome_Ocorrencia` varchar(80) DEFAULT NULL,
+  `Cod_Tipo_Ocorrencia` int(10) unsigned DEFAULT NULL,
+  `Cod_Origem` char(1) DEFAULT NULL,
+  PRIMARY KEY (`Cod_Ocorrencia`),
+  FOREIGN KEY (`Cod_Tipo_Ocorrencia`) REFERENCES `Tipo_Ocorrencia`(`Cod_Tipo_Ocorrencia`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=243;
+
+CREATE TABLE IF NOT EXISTS `Madeira_Nome_Intern_Ocorr` (
+  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Nome_Internacional` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Ocorrencia` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Cod_Madeira`,`Cod_Nome_Internacional`,`Cod_Ocorrencia`),
+  FOREIGN KEY (`Cod_Madeira`, `Cod_Nome_Internacional`) REFERENCES `Madeira_Nome_Internacional`(`Cod_Madeira`, `Cod_Nome_Internacional`),
+  FOREIGN KEY (`Cod_Ocorrencia`) REFERENCES `Ocorrencia`(`Cod_Ocorrencia`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Madeira_Nome_Popular` (
+  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Nome_Popular` int(10) unsigned NOT NULL DEFAULT '0',
+  `Nome_Popular` varchar(100) DEFAULT NULL,
+  `Ind_Nome_Principal` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`Cod_Madeira`,`Cod_Nome_Popular`),
+  FOREIGN KEY (`Cod_Madeira`) REFERENCES `Madeira`(`Cod_Madeira`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `Madeira_Ocorrencia` (
+  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
+  `Cod_Ocorrencia` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Cod_Madeira`,`Cod_Ocorrencia`),
+  FOREIGN KEY (`Cod_Madeira`) REFERENCES `Madeira`(`Cod_Madeira`),
+  FOREIGN KEY (`Cod_Ocorrencia`) REFERENCES `Ocorrencia`(`Cod_Ocorrencia`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 INSERT INTO `Conteudo` (`Cod_Conteudo`, `Desc_Conteudo`) VALUES
 (1, 'durável'),
@@ -148,22 +339,6 @@ INSERT INTO `Conteudo` (`Cod_Conteudo`, `Desc_Conteudo`) VALUES
 (110, 'regular'),
 (111, 'difícil');
 
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Determinador`
---
-
-CREATE TABLE IF NOT EXISTS `Determinador` (
-  `Cod_Determinador` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Nome_Determinador` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`Cod_Determinador`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
-
---
--- Extraindo dados da tabela `Determinador`
---
-
 INSERT INTO `Determinador` (`Cod_Determinador`, `Nome_Determinador`) VALUES
 (1, 'Mart.'),
 (2, 'L.'),
@@ -215,22 +390,6 @@ INSERT INTO `Determinador` (`Cod_Determinador`, `Nome_Determinador`) VALUES
 (48, 'Miq.'),
 (49, '(J.F. Gmel.) Exell'),
 (50, 'Hill & Johnson');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Especie`
---
-
-CREATE TABLE IF NOT EXISTS `Especie` (
-  `Cod_Especie` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Nome_Especie` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`Cod_Especie`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=68 ;
-
---
--- Extraindo dados da tabela `Especie`
---
 
 INSERT INTO `Especie` (`Cod_Especie`, `Nome_Especie`) VALUES
 (1, 'burserifolia'),
@@ -301,22 +460,6 @@ INSERT INTO `Especie` (`Cod_Especie`, `Nome_Especie`) VALUES
 (66, 'huberi'),
 (67, 'amazonia');
 
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Familia`
---
-
-CREATE TABLE IF NOT EXISTS `Familia` (
-  `Cod_Familia` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Nome_Familia` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`Cod_Familia`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
-
---
--- Extraindo dados da tabela `Familia`
---
-
 INSERT INTO `Familia` (`Cod_Familia`, `Nome_Familia`) VALUES
 (1, 'Burseraceae'),
 (2, 'Euphorbiaceae'),
@@ -346,24 +489,34 @@ INSERT INTO `Familia` (`Cod_Familia`, `Nome_Familia`) VALUES
 (26, 'Verbenaceae'),
 (27, 'Humiriaceae');
 
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Fonte`
---
-
-CREATE TABLE IF NOT EXISTS `Fonte` (
-  `Cod_Fonte` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Referencia` int(10) unsigned NOT NULL DEFAULT '0',
-  `Desc_Num_Fonte` varchar(50) DEFAULT NULL,
-  `Desc_Obs_Fonte` text,
-  PRIMARY KEY (`Cod_Fonte`),
-  KEY `Fonte_FKIndex1` (`Cod_Referencia`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `Fonte`
---
+INSERT INTO `Referencia` (`Cod_Referencia`, `Nome_Referencia`, `Nome_Completo_Referencia`, `Desc_Endereco_Site`) VALUES
+(1, 'IPT', 'Instituto de Pesquisas Tecnológicas do Estado de São Paulo - IPT', 'www.ipt.br'),
+(2, 'ATIBT', 'Association Technique Internationale des Bois Tropicaux', 'www.atibt.com'),
+(3, 'BSI', 'British Standards Institution', 'www.bsi-global.com'),
+(4, 'Berni et al.', 'Berni, C. A.; Bolza, E.; Christensen, F.J.', ''),
+(5, 'Chudnoff', 'Chudnoff, M.', ''),
+(6, 'CTFT/INPA', 'Centre Technique Forestier Tropical - CTFT / Instituto Nacional de Pesquisas da Amazônia - INPA', ''),
+(7, 'IBAMA', 'Instituto Brasileiro do Meio Ambiente e dos Recursos Naturais Renováveis - IBAMA', 'www.ibama.gov.br'),
+(8, 'Jankowsky', 'Jankowsky, I. P. (Coord.)', ''),
+(9, 'SUDAM/IPT', 'Superintendência do Desenvolvimento da Amazônia - SUDAM/Instituto de Pesquisas Tecnológicas do Estado de São Paulo - IPT', ''),
+(10, 'IBDF', 'Instituto Brasilleiro de Desenvolvimento Florestal - IBDF', ''),
+(11, 'INPA', 'Instituto Nacional de Pesquisas da Amazônia - INPA', 'www.inpa.gov.br'),
+(12, 'Jesus et al.', 'Jesus, M. A.; Morais, J. W.; Abreu, R. L. S.; Cardias, M. F. C.', ''),
+(13, 'Fosco Mucci et al.', 'Fosco Mucci, E. S.; LOPEZ, G. A. C.; Montagna, R. G.', ''),
+(14, 'Lopez', 'Lopez, G. A. C.', NULL),
+(15, 'Angyalossy-Alfonso', 'Angyalossy-Alfonso, V.', ''),
+(16, 'Silva', NULL, NULL),
+(17, 'Brito Neto et al.', NULL, NULL),
+(18, 'IPT/SCTDE', 'Instituto de Pesquisas Tecnológicas do Estado de São Paulo - IPT / Secretaria da Ciência, Tecnologia e Desenvolvimento Econômico -  SCTDE', ''),
+(19, 'Abreu & Silva', 'Abreu, R. L. S.; Silva, K. E. S.', ''),
+(20, 'Lepage', 'Lepage, E. S.', NULL),
+(21, 'Brazolin & Tomazello', 'Brazolin, S.; Tomazello Filho, M.', NULL),
+(22, 'Brotero', 'Brotero, F.A.', ''),
+(23, 'Mainieri', 'Mainieri, C.', ''),
+(24, 'Prospect', 'Prospect 2.1 for Windows', ''),
+(25, 'Camargos  et  al.', 'Camargos, J.A.C.; Coradin, V.T.R; Czarneski, C.M.; Oliveira, D. de; Meguerditchian, I.', ''),
+(26, 'CIRAD', '', ''),
+(27, 'Flynn Jr. & Holder', 'Flynn Jr., J.H. & Holder, C.D.', '');
 
 INSERT INTO `Fonte` (`Cod_Fonte`, `Cod_Referencia`, `Desc_Num_Fonte`, `Desc_Obs_Fonte`) VALUES
 (1, 1, '1983', '<STRONG>Manual de identificação das principais madeiras comerciais brasileiras.</STRONG> São Paulo: IPT, 1983. 241p. (publicação IPT No 1226).'),
@@ -404,22 +557,6 @@ INSERT INTO `Fonte` (`Cod_Fonte`, `Cod_Referencia`, `Desc_Num_Fonte`, `Desc_Obs_
 (36, 7, '2006', 'Banco de Dados de Madeiras Brasileiras em <A href=''http://www.ibama.gov.br/lpf/madeira/default.htm''>http://www.ibama.gov.br/lpf/madeira/default.htm</A>. 2006.<BR><BR><BR>'),
 (37, 26, 'XXX', ''),
 (38, 27, '2001', 'A guide to useful woods of the world. Forest Products Society. Madison, Wisconsin. 2<SUP>nd</SUP> ed. 618p.');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Genero`
---
-
-CREATE TABLE IF NOT EXISTS `Genero` (
-  `Cod_Genero` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Nome_Genero` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`Cod_Genero`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=78 ;
-
---
--- Extraindo dados da tabela `Genero`
---
 
 INSERT INTO `Genero` (`Cod_Genero`, `Nome_Genero`) VALUES
 (1, 'Trattinnickia'),
@@ -499,35 +636,6 @@ INSERT INTO `Genero` (`Cod_Genero`, `Nome_Genero`) VALUES
 (75, 'Piptadenia'),
 (76, 'Terminalia'),
 (77, 'Corymbia');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Item`
---
-
-CREATE TABLE IF NOT EXISTS `Item` (
-  `Cod_Item` int(10) unsigned NOT NULL DEFAULT '0',
-  `Nome_Item` varchar(200) DEFAULT NULL,
-  `Cod_Item_Pai` int(10) unsigned DEFAULT NULL,
-  `Cod_Nivel_Item` int(10) unsigned DEFAULT NULL,
-  `Cod_Tipo_Item` char(3) DEFAULT NULL,
-  `Num_Parte_Inteira` decimal(8,0) DEFAULT NULL,
-  `Num_Parte_Decimal` decimal(2,0) DEFAULT NULL,
-  `Desc_Unidade_Medida` varchar(50) DEFAULT NULL,
-  `Ind_Exibir_Ficha` tinyint(1) unsigned DEFAULT NULL,
-  `Cod_Tipo_Pesquisa` char(3) DEFAULT NULL,
-  `Num_Ordem_Item` int(10) unsigned DEFAULT NULL,
-  `Desc_Obs_Item` text,
-  `Cod_Status_Item` char(1) DEFAULT NULL,
-  `Ind_Exibir_Pesquisa` tinyint(1) unsigned DEFAULT NULL,
-  `Cod_Tipo_Parametro` char(3) DEFAULT NULL,
-  PRIMARY KEY (`Cod_Item`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `Item`
---
 
 INSERT INTO `Item` (`Cod_Item`, `Nome_Item`, `Cod_Item_Pai`, `Cod_Nivel_Item`, `Cod_Tipo_Item`, `Num_Parte_Inteira`, `Num_Parte_Decimal`, `Desc_Unidade_Medida`, `Ind_Exibir_Ficha`, `Cod_Tipo_Pesquisa`, `Num_Ordem_Item`, `Desc_Obs_Item`, `Cod_Status_Item`, `Ind_Exibir_Pesquisa`, `Cod_Tipo_Parametro`) VALUES
 (1, 'Características gerais', 0, 1, '', 0, 0, '', 1, 'T', 1, '', 'A', 1, ''),
@@ -615,23 +723,100 @@ INSERT INTO `Item` (`Cod_Item`, `Nome_Item`, `Cod_Item_Pai`, `Cod_Nivel_Item`, `
 (83, 'Coeficiente de resiliência R', 52, 4, 'N', 2, 2, '', 1, 'T', 2, '', 'A', 1, 'N'),
 (84, 'Cota dinâmica R/<FONT face=symbol>r</FONT><FONT face=arial><SUB>ab,15</SUB><SUP>2</SUP></FONT>', 52, 4, 'N', 1, 2, '', 1, 'T', 3, '', 'A', 1, 'N');
 
--- --------------------------------------------------------
+INSERT INTO `Tipo_Foto` (`Cod_Tipo_Foto`, `Desc_Tipo_Foto`, `Num_Ordem_Tipo_Foto`) VALUES
+(1, 'Face tangencial', 1),
+(2, 'Face radial', 2),
+(3, 'Face mista', 3),
+(4, 'Fotomacrografia (10x)', 4);
 
---
--- Estrutura da tabela `Item_Conteudo`
---
+INSERT INTO `Tipo_Ocorrencia` (`Cod_Tipo_Ocorrencia`, `Desc_Tipo_Ocorrencia`) VALUES
+(1, 'Continente'),
+(2, 'País'),
+(3, 'Local'),
+(4, 'Região'),
+(5, 'Estado');
 
-CREATE TABLE IF NOT EXISTS `Item_Conteudo` (
-  `Cod_Item` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Conteudo` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`Cod_Item`,`Cod_Conteudo`),
-  KEY `Item_Conteudo_FKIndex1` (`Cod_Item`),
-  KEY `Item_Conteudo_FKIndex2` (`Cod_Conteudo`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `Item_Conteudo`
---
+INSERT INTO `Madeira` (`Cod_Madeira`, `Data_Cadastro`, `Desc_Obs_Madeira`, `Desc_Obs_Ocorrencia`, `Desc_Obs_Nome_Cientifico`, `Cod_Status_Madeira`) VALUES
+(1, '2006-04-17', '', '', '', 'A'),
+(2, '2006-04-17', '', '', '', 'A'),
+(3, '2006-04-17', '', '', 'o&nbsp;gênero <I>Couratari</I> é encontrado na Amazônia onde ocorrem, dentre outras, as espécies <I>Couratari guianensis</I> Aubl., <I>C. oblongifolia</I> Ducke et R. Knuth e <I>C. stellata </I>A. C. Sm. Como essas Madeiras são semelhantes quanto à densidade de massa, caracteres anatômicos e cor, nesta ficha são tratadas em conjunto, sendo mencionada a espécie, quando pertinente.', 'A'),
+(4, '2006-04-17', '', '', 'a&nbsp;Madeira de maçaranduba pertence ao grupo de espécies do gênero <I>Manilkara</I> que produzem Madeiras pesadas, duras, de coloração castanho-avermelhada. Dentre essas espécies, pode-se mencionar <I>Manilkara amazonica</I> (Huber) Chevalier (sinônimo <I>M. bidentata</I> subsp. <I>surinamensis</I> (Miq.) Penning.; <I>M. cavalcantei </I>Pires &amp; Barb. Rodr. ex Penning.; <I>M. huberi </I>(Ducke) Chevalier; <I>M. inundata </I>(Ducke) Ducke. Essas Madeiras recebem nomes vulgares típicos em suas regiões de ocorrência, como aparaiú, marapajuba-da-várzea, maçaranduba, marapajuba, maçaranduba-de-leite e maçarandubinha, na Amazônia; maçaranduba e paraju, no sul da Bahia até as regiões Sul e Sudeste. Como essas Madeiras são semelhantes nas suas características e têm o mesmo valor no comércio, nesta ficha são tratadas em conjunto, sendo mencionada a espécie, quando pertinente. ', 'A'),
+(5, '2006-04-17', '', '', '', 'A'),
+(6, '2006-04-17', '', '', 'no Brasil, as Madeiras de sucupira pertencem aos gêneros <I>Bowdichia </I>e <I>Diplotropis</I>. Como essas Madeiras são semelhantes nas suas características e no comércio têm o mesmo valor; nesta ficha são tratadas em conjunto, sendo mencionada a espécie, quando pertinente.', 'A'),
+(7, '2006-04-17', '', 'Espécie Introduzida no Brasil.\0', 'Madeira de reflorestamento.', 'A'),
+(8, '2006-04-18', NULL, NULL, 'nesta ficha são apresentadas informações para a espécie <I>H. petraeum</I>, no entanto existem outras espécies de <I>Hymenolobium</I>, como <I>H. complicatum</I> Ducke, <I>H. elatum</I> Ducke, <I>H. excelsum</I> Ducke, <I>H. heterocarpum </I>Ducke, <I>H modestum</I> Ducke, que são comercializadas no Brasil como angelim-pedra.', 'A'),
+(9, '2006-04-18', NULL, '', NULL, 'A'),
+(10, '2006-04-19', NULL, NULL, NULL, 'A'),
+(11, '2006-04-19', NULL, NULL, NULL, 'A'),
+(12, '2006-04-19', NULL, NULL, 'Madeira de reflorestamento', 'A'),
+(13, '2006-04-19', NULL, NULL, 'Madeira de reflorestamento', 'A'),
+(14, '2006-04-19', NULL, NULL, 'o&nbsp;gênero <I>Hymenaea </I>, com várias espécies (<I>Hymenaea courbaril</I> L., <I>Hymenaea intermedia</I> Ducke, <I>Hymenaea oblongifolia</I> Huber, <I>Hymenaea parvifolia</I> Huber, <I>Hymenaea stilbocarpa</I> Hayne), é encontrado em quase todas as matas nativas do País. A espécie <I>Hymenaea stilbocarpa</I> Hayne, ocorre desde o estado do Piauí até o Paraná e a espécie <I>Hymenaea courbaril</I> L. é mais comum na Amazônia. Como essas Madeiras são semelhantes quanto à densidade de massa e caracteres anatômicos, no comércio têm, praticamente, o mesmo valor. Assim nesta ficha essas Madeiras são tratadas em conjunto, sendo mencionada a espécie, quando pertinente. ', 'A'),
+(15, '2006-04-19', NULL, NULL, 'no Brasil, as Madeiras de mandioqueira pertencem aos gêneros <I>Qualea</I> e <I>Ruizterania</I>. Embora apresentem propriedades variadas, essas Madeiras são comercializadas indistintamente como mandioqueira. Nesta ficha são apresentadas informações para a espécie <I>Ruizterania albiflora.</I>', 'A'),
+(16, '2006-04-19', NULL, NULL, NULL, 'A'),
+(17, '2006-05-04', NULL, NULL, 'Madeira de um Pertence quaruba AO grupo de espécies do gênero Vochysia <I> </ I>. Dentre essas espécies, pode-se mencionar Vochysia guianensis <I> </ I> Aubl., <I> V. <Maxima / I> Ducke, <I> V. obidensis </ I> (Huber) Ducke, <I> V. <Eximia / I> Ducke, <I> V. <Floribunda / I> Mart., <I> V. <Melinoni / I> Benkmann, <I> V. <Ferruginea / I> Mart., <I> V. <Paraensis / I> Ducke, <I> V. <Surinamensis / I> Stafl., <I> V. <Vismaefolia / I> Spruce ex Warm. Como essas Madeiras São semelhantes NAS SUAS Características e não dez Comércio o valor mesmo; Nesta Ficha Conjunto em São tratadas, mencionada Sendo uma Espécie QUANDO pertinente. ', 'A'),
+(18, '2006-05-26', '', '', '', 'A'),
+(19, '2006-05-26', '', '', 'o&nbsp;gênero <EM>Euplassa</EM>, com várias espécies, é encontrado na Amazônia onde ocorrem as espécies <EM>Euplassa pinnata</EM> I. M. Johnst. e <EM>Euplassa incana</EM> (Klotzch) I. M. Johnst. Na mata atlântica, do sul do Estado da Bahia até o Estado de Santa Catarina, ocorre a espécie <EM>Euplassa cantareirae</EM> Sleumer. <BR>Como essas Madeiras são semelhantes quanto à densidade de massa, caracteres anatômicos e cor, nesta ficha são tratadas em conjunto, sendo mencionada a espécie, quando pertinente.', 'A'),
+(20, '2006-05-26', '', '', '', 'A'),
+(21, '2006-05-26', '', '', '', 'A'),
+(22, '2006-05-26', '', '', '', 'A'),
+(23, '2006-05-29', '', '', '', 'A'),
+(24, '2006-06-12', '', '', '', 'A'),
+(25, '2006-06-12', '', '', '', 'A'),
+(26, '2006-06-12', '', '', '', 'A'),
+(27, '2006-06-12', '', '', '', 'A'),
+(28, '2006-06-12', '', '', '', 'A'),
+(29, '2006-06-12', '', '', '', 'A'),
+(30, '2006-06-12', '', '', '', 'A'),
+(31, '2006-06-13', '', '', 'o&nbsp;gênero <EM>Copaifera</EM> , com várias espécies, é encontrado em quase todas as matas do País. Na mata atlântica ocorrem as espécies C. <EM>trapezifolia</EM> Hayne e C. <EM>langsdorffii</EM> Desf., na Amazônia são comuns as espécies C. <EM>langsdorffii</EM> Desf., C. <EM>duckei</EM> Duryer, C. <EM>multijuga</EM> Hayne, C. <EM>martii</EM> Hayne e C. <EM>reticulata</EM> Duckei. Como essas Madeiras são semelhantes quanto à densidade de massa e caracteres anatômicos, no comércio têm, praticamente, o mesmo valor.<BR>Assim nesta ficha essas Madeiras são tratadas em conjunto, sendo mencionada a espécie, quando pertinente.', 'A'),
+(32, '2006-06-13', '', '', '', 'A'),
+(33, '2006-06-13', '', '', '', 'A'),
+(34, '2006-06-13', '', '', '', 'A'),
+(35, '2006-06-13', '', '', '', 'A'),
+(36, '2006-06-13', '', '', '', 'A'),
+(37, '2006-06-13', '', '', '', 'A'),
+(38, '2006-06-13', '', '', 'a Madeira de ipê pertence ao grupo de espécies do gênero <EM>Tabebuia</EM> que produzem Madeiras pesadas, duras, de coloração pardo-acastanhada, com seus vasos obstruídos por ipeína (substância de cor amarela-esverdeada). Dentre essas espécies, pode-se mencionar <EM>Tabebuia ochraceae</EM> (Cham.) Bureau, <EM>Tabebuia impetiginosa</EM> (Mart. ex DC.) Standl., <EM>Tabebuia longifolia</EM> (Bureau) Standl. e <EM>Tabebuia serratifolia</EM> (Vahl.) Nichols.<BR>Essas Madeiras, recebem nomes vulgares típicos em suas regiões de ocorrência, como pau-d´arco, da Amazônia até o sul da Bahia; ipê, ipê-amarelo e ipê-roxo, nas regiões Sul e Sudeste; e piúna, piúna-amarela e piúna-roxa, em Mato Grosso e Goiás.<BR>Como essas Madeiras são semelhantes nas suas características e no comércio têm o mesmo valor; nesta ficha são tratadas em conjunto, sendo mencionada a espécie, quando pertinente.', 'A'),
+(39, '2006-06-13', '', '', '', 'A'),
+(40, '2006-06-14', '', '', '', 'A'),
+(41, '2006-06-14', '', '', '', 'A'),
+(42, '2006-06-14', '', '', '', 'A'),
+(43, '2006-06-14', '', '', '', 'A'),
+(44, '2006-06-14', '', '', '', 'A'),
+(45, '2006-06-14', '', '', '', 'A'),
+(46, '2006-06-14', '', '', '', 'A'),
+(47, '2006-06-14', '', '', '', 'A'),
+(48, '2006-06-14', '', '', '', 'A'),
+(49, '2006-06-14', '', '', 'o gênero <EM>Peltogyne</EM>, com várias espécies (dentre outras, <EM>Peltogyne paniculata</EM> Benth., <EM>P. maranhensis</EM> Huber &amp; Ducke, <EM>P. subsessilis</EM> W. Rodr., P. paradoxa Ducke, <EM>P. catingae</EM> Ducke, <EM>P. confertiflora</EM> (Hayne) Benth., <EM>P. lecointei</EM> Ducke, <EM>P. recifensis</EM> Ducke), é encontrado em quase todas as matas nativas do País. A espécie <EM>Peltogyne</EM> <EM>confertiflora</EM> (Hayne) Benth., ocorre desde a região Norte, Centro Oeste, Nordeste até Sudeste; já espécie <EM>P. recifensis</EM> Ducke é mais comum na região de Pernambuco e a espécie <EM>P. lecointei</EM> Ducke ocorre no Pará e Maranhão.<BR>Como essas Madeiras são semelhantes nas suas características e no comércio têm o mesmo valor, nesta ficha são tratadas em conjunto, sendo mencionada a espécie, quando pertinente.', 'A'),
+(50, '2006-06-14', '', '', '', 'A'),
+(51, '2006-10-20', '', '', 'No Brasil, as madeiras de angelim-amargoso pertencem aos gêneros <EM>Vatairea</EM> e <EM>Vataireopsis</EM>, que produzem madeiras pesadas, duras, de coloração castanha-amarelada a castanha-avermelhada com forte gosto amargo. Essas madeiras são comercializadas indistintamente como angelim-amargoso. Como essas madeiras são semelhantes nas suas características e no comércio têm o mesmo valor; nesta ficha são tratadas em conjunto, sendo mencionada a espécie, quando pertinente.', 'A'),
+(52, '2006-10-20', '', '', '', 'A'),
+(53, '2006-10-20', '', '', '', 'A'),
+(54, '2006-10-20', '', '', '', 'A'),
+(55, '2006-10-21', '', '', 'no Brasil, as madeiras de cabriúva-parda pertencem às espécies <EM>Myrocarpus frondosus</EM> e <EM>Myrocarpus fastigiatus</EM>, que são muito semelhantes na cor e constituição anatômica; sendo usadas e comercializadas indistintamente.', 'A'),
+(56, '2006-10-21', '', '', '', 'A'),
+(57, '2006-10-21', '', '', '', 'A'),
+(58, '2006-10-21', '', '', '', 'A'),
+(59, '2006-10-21', '', '', 'árvore originária da Índia e China e extensamente plantada no Sudeste Asiático, Oceania e na porção sul da América Latina.', 'A'),
+(60, '2006-10-21', '', '', '', 'A'),
+(61, '2006-10-21', '', '', '', 'A'),
+(62, '2006-10-21', '', '', 'no Brasil, as madeiras de faveira pertencem ao gênero <EM>Parkia</EM>, que produz madeiras leves, macias ao corte, de coloração clara esbranquiçada, amarelada e/ou rosada. Essas madeiras, embora pertençam a várias espécies, são comercializadas indistintamente como faveira.&nbsp; ', 'A'),
+(63, '2006-10-21', '', '', '', 'A'),
+(64, '2006-10-21', '', '', 'Árvore nativa da Austrália e plantada em diversos países. No Brasil, é mais comum nas regiões Sul e Sudeste, principalmente nos estados do Paraná e São Paulo, onde são plantadas em fileiras, como quebra-vento.', 'A'),
+(65, '2006-10-23', '', '', '', 'A'),
+(66, '2006-10-23', '', '', '', 'A'),
+(67, '2006-10-23', '', '', '(sinonímia <EM>Holopyxidium jarana</EM>)', 'A'),
+(68, '2006-10-23', '', '', '', 'A'),
+(69, '2006-10-23', '', '', '', 'A'),
+(70, '2006-10-23', '', '', '', 'A'),
+(71, '2006-10-23', '', '', '', 'A'),
+(72, '2006-10-23', '', '', '', 'A'),
+(73, '2006-10-23', '', '', 'informações para a espécie <EM>Lecythis pisonis.</EM>', 'A'),
+(74, '2006-10-23', '', '', '', 'A'),
+(75, '2006-10-23', '', '', '', 'A'),
+(76, '2006-10-23', '', '', 'As madeiras&nbsp; de tanibuca ou cuiarana são pesadas e apresentam cerne variável do castanho-amarelado ao castanho-oliva, pertencem aos gêneros Buchenavia e Terminalia, cuja distinção das espécies amazônicas é difícil.<BR>Devido à semelhança de suas propriedades, essas madeiras são comercializadas em conjunto sob o mesmo nome comercial. Nesta ficha são apresentadas informações para a espécie Buchenavia huberi e Terminalia amazonia, sendo mencionada a espécie quando pertinente.', 'A'),
+(77, '2006-10-23', '', '', '', 'A'),
+(78, '2006-10-23', '', 'árvore nativa na Índia, Miamar, Paquistão, Tailândia, Laos, Vietnã, Camboja e plantada em diversas regiões. Na América é cultivada em diversos países, destacando-se o Brasil, Colômbia, Costa Rica, Cuba,&nbsp;Jamaica, México, Peru e Venezuela.', '', 'A'),
+(79, '2006-10-23', '', '', '', 'A'),
+(80, '2006-10-23', '', '', '', 'A');
 
 INSERT INTO `Item_Conteudo` (`Cod_Item`, `Cod_Conteudo`) VALUES
 (65, 47),
@@ -750,130 +935,6 @@ INSERT INTO `Item_Conteudo` (`Cod_Item`, `Cod_Conteudo`) VALUES
 (81, 109),
 (81, 110),
 (81, 111);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Madeira`
---
-
-CREATE TABLE IF NOT EXISTS `Madeira` (
-  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
-  `Data_Cadastro` date DEFAULT NULL,
-  `Desc_Obs_Madeira` text,
-  `Desc_Obs_Ocorrencia` text,
-  `Desc_Obs_Nome_Cientifico` text,
-  `Cod_Status_Madeira` char(1) DEFAULT NULL,
-  PRIMARY KEY (`Cod_Madeira`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `Madeira`
---
-
-INSERT INTO `Madeira` (`Cod_Madeira`, `Data_Cadastro`, `Desc_Obs_Madeira`, `Desc_Obs_Ocorrencia`, `Desc_Obs_Nome_Cientifico`, `Cod_Status_Madeira`) VALUES
-(1, '2006-04-17', '', '', '', 'A'),
-(2, '2006-04-17', '', '', '', 'A'),
-(3, '2006-04-17', '', '', 'o&nbsp;gênero <I>Couratari</I> é encontrado na Amazônia onde ocorrem, dentre outras, as espécies <I>Couratari guianensis</I> Aubl., <I>C. oblongifolia</I> Ducke et R. Knuth e <I>C. stellata </I>A. C. Sm. Como essas Madeiras são semelhantes quanto à densidade de massa, caracteres anatômicos e cor, nesta ficha são tratadas em conjunto, sendo mencionada a espécie, quando pertinente.', 'A'),
-(4, '2006-04-17', '', '', 'a&nbsp;Madeira de maçaranduba pertence ao grupo de espécies do gênero <I>Manilkara</I> que produzem Madeiras pesadas, duras, de coloração castanho-avermelhada. Dentre essas espécies, pode-se mencionar <I>Manilkara amazonica</I> (Huber) Chevalier (sinônimo <I>M. bidentata</I> subsp. <I>surinamensis</I> (Miq.) Penning.; <I>M. cavalcantei </I>Pires &amp; Barb. Rodr. ex Penning.; <I>M. huberi </I>(Ducke) Chevalier; <I>M. inundata </I>(Ducke) Ducke. Essas Madeiras recebem nomes vulgares típicos em suas regiões de ocorrência, como aparaiú, marapajuba-da-várzea, maçaranduba, marapajuba, maçaranduba-de-leite e maçarandubinha, na Amazônia; maçaranduba e paraju, no sul da Bahia até as regiões Sul e Sudeste. Como essas Madeiras são semelhantes nas suas características e têm o mesmo valor no comércio, nesta ficha são tratadas em conjunto, sendo mencionada a espécie, quando pertinente. ', 'A'),
-(5, '2006-04-17', '', '', '', 'A'),
-(6, '2006-04-17', '', '', 'no Brasil, as Madeiras de sucupira pertencem aos gêneros <I>Bowdichia </I>e <I>Diplotropis</I>. Como essas Madeiras são semelhantes nas suas características e no comércio têm o mesmo valor; nesta ficha são tratadas em conjunto, sendo mencionada a espécie, quando pertinente.', 'A'),
-(7, '2006-04-17', '', 'Espécie Introduzida no Brasil.\0', 'Madeira de reflorestamento.', 'A'),
-(8, '2006-04-18', NULL, NULL, 'nesta ficha são apresentadas informações para a espécie <I>H. petraeum</I>, no entanto existem outras espécies de <I>Hymenolobium</I>, como <I>H. complicatum</I> Ducke, <I>H. elatum</I> Ducke, <I>H. excelsum</I> Ducke, <I>H. heterocarpum </I>Ducke, <I>H modestum</I> Ducke, que são comercializadas no Brasil como angelim-pedra.', 'A'),
-(9, '2006-04-18', NULL, '', NULL, 'A'),
-(10, '2006-04-19', NULL, NULL, NULL, 'A'),
-(11, '2006-04-19', NULL, NULL, NULL, 'A'),
-(12, '2006-04-19', NULL, NULL, 'Madeira de reflorestamento', 'A'),
-(13, '2006-04-19', NULL, NULL, 'Madeira de reflorestamento', 'A'),
-(14, '2006-04-19', NULL, NULL, 'o&nbsp;gênero <I>Hymenaea </I>, com várias espécies (<I>Hymenaea courbaril</I> L., <I>Hymenaea intermedia</I> Ducke, <I>Hymenaea oblongifolia</I> Huber, <I>Hymenaea parvifolia</I> Huber, <I>Hymenaea stilbocarpa</I> Hayne), é encontrado em quase todas as matas nativas do País. A espécie <I>Hymenaea stilbocarpa</I> Hayne, ocorre desde o estado do Piauí até o Paraná e a espécie <I>Hymenaea courbaril</I> L. é mais comum na Amazônia. Como essas Madeiras são semelhantes quanto à densidade de massa e caracteres anatômicos, no comércio têm, praticamente, o mesmo valor. Assim nesta ficha essas Madeiras são tratadas em conjunto, sendo mencionada a espécie, quando pertinente. ', 'A'),
-(15, '2006-04-19', NULL, NULL, 'no Brasil, as Madeiras de mandioqueira pertencem aos gêneros <I>Qualea</I> e <I>Ruizterania</I>. Embora apresentem propriedades variadas, essas Madeiras são comercializadas indistintamente como mandioqueira. Nesta ficha são apresentadas informações para a espécie <I>Ruizterania albiflora.</I>', 'A'),
-(16, '2006-04-19', NULL, NULL, NULL, 'A'),
-(17, '2006-05-04', NULL, NULL, 'Madeira de um Pertence quaruba AO grupo de espécies do gênero Vochysia <I> </ I>. Dentre essas espécies, pode-se mencionar Vochysia guianensis <I> </ I> Aubl., <I> V. <Maxima / I> Ducke, <I> V. obidensis </ I> (Huber) Ducke, <I> V. <Eximia / I> Ducke, <I> V. <Floribunda / I> Mart., <I> V. <Melinoni / I> Benkmann, <I> V. <Ferruginea / I> Mart., <I> V. <Paraensis / I> Ducke, <I> V. <Surinamensis / I> Stafl., <I> V. <Vismaefolia / I> Spruce ex Warm. Como essas Madeiras São semelhantes NAS SUAS Características e não dez Comércio o valor mesmo; Nesta Ficha Conjunto em São tratadas, mencionada Sendo uma Espécie QUANDO pertinente. ', 'A'),
-(18, '2006-05-26', '', '', '', 'A'),
-(19, '2006-05-26', '', '', 'o&nbsp;gênero <EM>Euplassa</EM>, com várias espécies, é encontrado na Amazônia onde ocorrem as espécies <EM>Euplassa pinnata</EM> I. M. Johnst. e <EM>Euplassa incana</EM> (Klotzch) I. M. Johnst. Na mata atlântica, do sul do Estado da Bahia até o Estado de Santa Catarina, ocorre a espécie <EM>Euplassa cantareirae</EM> Sleumer. <BR>Como essas Madeiras são semelhantes quanto à densidade de massa, caracteres anatômicos e cor, nesta ficha são tratadas em conjunto, sendo mencionada a espécie, quando pertinente.', 'A'),
-(20, '2006-05-26', '', '', '', 'A'),
-(21, '2006-05-26', '', '', '', 'A'),
-(22, '2006-05-26', '', '', '', 'A'),
-(23, '2006-05-29', '', '', '', 'A'),
-(24, '2006-06-12', '', '', '', 'A'),
-(25, '2006-06-12', '', '', '', 'A'),
-(26, '2006-06-12', '', '', '', 'A'),
-(27, '2006-06-12', '', '', '', 'A'),
-(28, '2006-06-12', '', '', '', 'A'),
-(29, '2006-06-12', '', '', '', 'A'),
-(30, '2006-06-12', '', '', '', 'A'),
-(31, '2006-06-13', '', '', 'o&nbsp;gênero <EM>Copaifera</EM> , com várias espécies, é encontrado em quase todas as matas do País. Na mata atlântica ocorrem as espécies C. <EM>trapezifolia</EM> Hayne e C. <EM>langsdorffii</EM> Desf., na Amazônia são comuns as espécies C. <EM>langsdorffii</EM> Desf., C. <EM>duckei</EM> Duryer, C. <EM>multijuga</EM> Hayne, C. <EM>martii</EM> Hayne e C. <EM>reticulata</EM> Duckei. Como essas Madeiras são semelhantes quanto à densidade de massa e caracteres anatômicos, no comércio têm, praticamente, o mesmo valor.<BR>Assim nesta ficha essas Madeiras são tratadas em conjunto, sendo mencionada a espécie, quando pertinente.', 'A'),
-(32, '2006-06-13', '', '', '', 'A'),
-(33, '2006-06-13', '', '', '', 'A'),
-(34, '2006-06-13', '', '', '', 'A'),
-(35, '2006-06-13', '', '', '', 'A'),
-(36, '2006-06-13', '', '', '', 'A'),
-(37, '2006-06-13', '', '', '', 'A'),
-(38, '2006-06-13', '', '', 'a Madeira de ipê pertence ao grupo de espécies do gênero <EM>Tabebuia</EM> que produzem Madeiras pesadas, duras, de coloração pardo-acastanhada, com seus vasos obstruídos por ipeína (substância de cor amarela-esverdeada). Dentre essas espécies, pode-se mencionar <EM>Tabebuia ochraceae</EM> (Cham.) Bureau, <EM>Tabebuia impetiginosa</EM> (Mart. ex DC.) Standl., <EM>Tabebuia longifolia</EM> (Bureau) Standl. e <EM>Tabebuia serratifolia</EM> (Vahl.) Nichols.<BR>Essas Madeiras, recebem nomes vulgares típicos em suas regiões de ocorrência, como pau-d´arco, da Amazônia até o sul da Bahia; ipê, ipê-amarelo e ipê-roxo, nas regiões Sul e Sudeste; e piúna, piúna-amarela e piúna-roxa, em Mato Grosso e Goiás.<BR>Como essas Madeiras são semelhantes nas suas características e no comércio têm o mesmo valor; nesta ficha são tratadas em conjunto, sendo mencionada a espécie, quando pertinente.', 'A'),
-(39, '2006-06-13', '', '', '', 'A'),
-(40, '2006-06-14', '', '', '', 'A'),
-(41, '2006-06-14', '', '', '', 'A'),
-(42, '2006-06-14', '', '', '', 'A'),
-(43, '2006-06-14', '', '', '', 'A'),
-(44, '2006-06-14', '', '', '', 'A'),
-(45, '2006-06-14', '', '', '', 'A'),
-(46, '2006-06-14', '', '', '', 'A'),
-(47, '2006-06-14', '', '', '', 'A'),
-(48, '2006-06-14', '', '', '', 'A'),
-(49, '2006-06-14', '', '', 'o gênero <EM>Peltogyne</EM>, com várias espécies (dentre outras, <EM>Peltogyne paniculata</EM> Benth., <EM>P. maranhensis</EM> Huber &amp; Ducke, <EM>P. subsessilis</EM> W. Rodr., P. paradoxa Ducke, <EM>P. catingae</EM> Ducke, <EM>P. confertiflora</EM> (Hayne) Benth., <EM>P. lecointei</EM> Ducke, <EM>P. recifensis</EM> Ducke), é encontrado em quase todas as matas nativas do País. A espécie <EM>Peltogyne</EM> <EM>confertiflora</EM> (Hayne) Benth., ocorre desde a região Norte, Centro Oeste, Nordeste até Sudeste; já espécie <EM>P. recifensis</EM> Ducke é mais comum na região de Pernambuco e a espécie <EM>P. lecointei</EM> Ducke ocorre no Pará e Maranhão.<BR>Como essas Madeiras são semelhantes nas suas características e no comércio têm o mesmo valor, nesta ficha são tratadas em conjunto, sendo mencionada a espécie, quando pertinente.', 'A'),
-(50, '2006-06-14', '', '', '', 'A'),
-(51, '2006-10-20', '', '', 'No Brasil, as madeiras de angelim-amargoso pertencem aos gêneros <EM>Vatairea</EM> e <EM>Vataireopsis</EM>, que produzem madeiras pesadas, duras, de coloração castanha-amarelada a castanha-avermelhada com forte gosto amargo. Essas madeiras são comercializadas indistintamente como angelim-amargoso. Como essas madeiras são semelhantes nas suas características e no comércio têm o mesmo valor; nesta ficha são tratadas em conjunto, sendo mencionada a espécie, quando pertinente.', 'A'),
-(52, '2006-10-20', '', '', '', 'A'),
-(53, '2006-10-20', '', '', '', 'A'),
-(54, '2006-10-20', '', '', '', 'A'),
-(55, '2006-10-21', '', '', 'no Brasil, as madeiras de cabriúva-parda pertencem às espécies <EM>Myrocarpus frondosus</EM> e <EM>Myrocarpus fastigiatus</EM>, que são muito semelhantes na cor e constituição anatômica; sendo usadas e comercializadas indistintamente.', 'A'),
-(56, '2006-10-21', '', '', '', 'A'),
-(57, '2006-10-21', '', '', '', 'A'),
-(58, '2006-10-21', '', '', '', 'A'),
-(59, '2006-10-21', '', '', 'árvore originária da Índia e China e extensamente plantada no Sudeste Asiático, Oceania e na porção sul da América Latina.', 'A'),
-(60, '2006-10-21', '', '', '', 'A'),
-(61, '2006-10-21', '', '', '', 'A'),
-(62, '2006-10-21', '', '', 'no Brasil, as madeiras de faveira pertencem ao gênero <EM>Parkia</EM>, que produz madeiras leves, macias ao corte, de coloração clara esbranquiçada, amarelada e/ou rosada. Essas madeiras, embora pertençam a várias espécies, são comercializadas indistintamente como faveira.&nbsp; ', 'A'),
-(63, '2006-10-21', '', '', '', 'A'),
-(64, '2006-10-21', '', '', 'Árvore nativa da Austrália e plantada em diversos países. No Brasil, é mais comum nas regiões Sul e Sudeste, principalmente nos estados do Paraná e São Paulo, onde são plantadas em fileiras, como quebra-vento.', 'A'),
-(65, '2006-10-23', '', '', '', 'A'),
-(66, '2006-10-23', '', '', '', 'A'),
-(67, '2006-10-23', '', '', '(sinonímia <EM>Holopyxidium jarana</EM>)', 'A'),
-(68, '2006-10-23', '', '', '', 'A'),
-(69, '2006-10-23', '', '', '', 'A'),
-(70, '2006-10-23', '', '', '', 'A'),
-(71, '2006-10-23', '', '', '', 'A'),
-(72, '2006-10-23', '', '', '', 'A'),
-(73, '2006-10-23', '', '', 'informações para a espécie <EM>Lecythis pisonis.</EM>', 'A'),
-(74, '2006-10-23', '', '', '', 'A'),
-(75, '2006-10-23', '', '', '', 'A'),
-(76, '2006-10-23', '', '', 'As madeiras&nbsp; de tanibuca ou cuiarana são pesadas e apresentam cerne variável do castanho-amarelado ao castanho-oliva, pertencem aos gêneros Buchenavia e Terminalia, cuja distinção das espécies amazônicas é difícil.<BR>Devido à semelhança de suas propriedades, essas madeiras são comercializadas em conjunto sob o mesmo nome comercial. Nesta ficha são apresentadas informações para a espécie Buchenavia huberi e Terminalia amazonia, sendo mencionada a espécie quando pertinente.', 'A'),
-(77, '2006-10-23', '', '', '', 'A'),
-(78, '2006-10-23', '', 'árvore nativa na Índia, Miamar, Paquistão, Tailândia, Laos, Vietnã, Camboja e plantada em diversas regiões. Na América é cultivada em diversos países, destacando-se o Brasil, Colômbia, Costa Rica, Cuba,&nbsp;Jamaica, México, Peru e Venezuela.', '', 'A'),
-(79, '2006-10-23', '', '', '', 'A'),
-(80, '2006-10-23', '', '', '', 'A');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Madeira_Foto`
---
-
-CREATE TABLE IF NOT EXISTS `Madeira_Foto` (
-  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Foto` int(10) unsigned NOT NULL DEFAULT '0',
-  `Nome_Arquivo_Foto` varchar(100) DEFAULT NULL,
-  `Cod_Tipo_Foto` int(10) unsigned DEFAULT NULL,
-  `Desc_Obs_Foto` varchar(200) DEFAULT NULL,
-  `Nome_Arquivo_Zoom` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`Cod_Madeira`,`Cod_Foto`),
-  KEY `Madeira_Foto_FKIndex1` (`Cod_Madeira`),
-  KEY `Madeira_Foto_FKIndex2` (`Cod_Tipo_Foto`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `Madeira_Foto`
---
 
 INSERT INTO `Madeira_Foto` (`Cod_Madeira`, `Cod_Foto`, `Nome_Arquivo_Foto`, `Cod_Tipo_Foto`, `Desc_Obs_Foto`, `Nome_Arquivo_Zoom`) VALUES
 (1, 1, 'acacu-tangencial_75-BANCO.jpg', 1, '', 'Zoom_Acacu_Tangencial_75.jpg'),
@@ -1108,30 +1169,6 @@ INSERT INTO `Madeira_Foto` (`Cod_Madeira`, `Cod_Foto`, `Nome_Arquivo_Foto`, `Cod
 (80, 3, '80_uxi_85_reduzida.jpg', 4, '', NULL),
 (78, 1, '78_teca_80_reduzida.jpg', 4, '', NULL),
 (76, 3, '76-tanibuca_reduzida.jpg', 4, '', NULL);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Madeira_Item`
---
-
-CREATE TABLE IF NOT EXISTS `Madeira_Item` (
-  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Item` int(10) unsigned NOT NULL DEFAULT '0',
-  `Num_Linha` int(10) unsigned NOT NULL DEFAULT '0',
-  `Desc_Item` text,
-  `Valor_Inteiro` decimal(8,0) DEFAULT NULL,
-  `Valor_Decimal` decimal(2,0) DEFAULT NULL,
-  `Cod_Conteudo` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`Cod_Madeira`,`Cod_Item`,`Num_Linha`),
-  KEY `Madeira_Item_FKIndex1` (`Cod_Madeira`),
-  KEY `Madeira_Item_FKIndex2` (`Cod_Item`),
-  KEY `Madeira_Item_FKIndex3` (`Cod_Item`,`Cod_Conteudo`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `Madeira_Item`
---
 
 INSERT INTO `Madeira_Item` (`Cod_Madeira`, `Cod_Item`, `Num_Linha`, `Desc_Item`, `Valor_Inteiro`, `Valor_Decimal`, `Cod_Conteudo`) VALUES
 (1, 1, 1, NULL, NULL, NULL, NULL),
@@ -6345,27 +6382,6 @@ INSERT INTO `Madeira_Item` (`Cod_Madeira`, `Cod_Item`, `Num_Linha`, `Desc_Item`,
 (1, 52, 1, NULL, NULL, NULL, NULL),
 (28, 6, 1, 'visíveis a olho nu, médios a grandes; poucos; porosidade difusa; solitários e múltiplos; obstruídos por tilos e substância amarelada.', 0, 0, NULL);
 
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Madeira_Item_Fonte`
---
-
-CREATE TABLE IF NOT EXISTS `Madeira_Item_Fonte` (
-  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Item` int(10) unsigned NOT NULL DEFAULT '0',
-  `Num_Linha` int(10) unsigned NOT NULL DEFAULT '0',
-  `Num_Ordem_Fonte` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Fonte` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`Cod_Madeira`,`Cod_Item`,`Num_Linha`,`Num_Ordem_Fonte`),
-  KEY `Madeira_Item_Fonte_FKIndex1` (`Cod_Madeira`,`Cod_Item`,`Num_Linha`),
-  KEY `Madeira_Item_Fonte_FKIndex2` (`Cod_Fonte`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `Madeira_Item_Fonte`
---
-
 INSERT INTO `Madeira_Item_Fonte` (`Cod_Madeira`, `Cod_Item`, `Num_Linha`, `Num_Ordem_Fonte`, `Cod_Fonte`) VALUES
 (46, 2, 1, 1, 1),
 (1, 14, 1, 1, 4),
@@ -6931,26 +6947,6 @@ INSERT INTO `Madeira_Item_Fonte` (`Cod_Madeira`, `Cod_Item`, `Num_Linha`, `Num_O
 (80, 15, 1, 1, 17),
 (80, 18, 1, 1, 14),
 (76, 21, 1, 1, 6);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Madeira_Item_Observacao`
---
-
-CREATE TABLE IF NOT EXISTS `Madeira_Item_Observacao` (
-  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Item` int(10) unsigned NOT NULL DEFAULT '0',
-  `Num_Linha` int(10) unsigned NOT NULL DEFAULT '0',
-  `Num_Obs` int(10) unsigned NOT NULL DEFAULT '0',
-  `Desc_Obs` text,
-  PRIMARY KEY (`Cod_Madeira`,`Cod_Item`,`Num_Linha`,`Num_Obs`),
-  KEY `Madeira_Item_Observacao_FKIndex1` (`Cod_Madeira`,`Cod_Item`,`Num_Linha`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `Madeira_Item_Observacao`
---
 
 INSERT INTO `Madeira_Item_Observacao` (`Cod_Madeira`, `Cod_Item`, `Num_Linha`, `Num_Obs`, `Desc_Obs`) VALUES
 (1, 3, 1, 1, 'Fonte:'),
@@ -7619,28 +7615,6 @@ INSERT INTO `Madeira_Item_Observacao` (`Cod_Madeira`, `Cod_Item`, `Num_Linha`, `
 (74, 84, 1, 1, 'Resultados obtidos de acordo com a Norma ABNT MB26/53 (NBR 6230/85)<BR>Fonte:'),
 (56, 84, 1, 1, 'Resultados obtidos de acordo com a Norma ABNT MB26/53 (NBR 6230/85)<BR>Fonte:');
 
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Madeira_Item_Obs_Fonte`
---
-
-CREATE TABLE IF NOT EXISTS `Madeira_Item_Obs_Fonte` (
-  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Item` int(10) unsigned NOT NULL DEFAULT '0',
-  `Num_Linha` int(10) unsigned NOT NULL DEFAULT '0',
-  `Num_Obs` int(10) unsigned NOT NULL DEFAULT '0',
-  `Num_Ordem_Fonte` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Fonte` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`Cod_Madeira`,`Cod_Item`,`Num_Linha`,`Num_Obs`,`Num_Ordem_Fonte`),
-  KEY `Madeira_Item_Obs_Fonte_FKIndex1` (`Cod_Madeira`,`Cod_Item`,`Num_Linha`,`Num_Obs`),
-  KEY `Madeira_Item_Obs_Fonte_FKIndex2` (`Cod_Fonte`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `Madeira_Item_Obs_Fonte`
---
-
 INSERT INTO `Madeira_Item_Obs_Fonte` (`Cod_Madeira`, `Cod_Item`, `Num_Linha`, `Num_Obs`, `Num_Ordem_Fonte`, `Cod_Fonte`) VALUES
 (1, 3, 1, 1, 1, 1),
 (3, 3, 1, 1, 1, 1),
@@ -8094,31 +8068,6 @@ INSERT INTO `Madeira_Item_Obs_Fonte` (`Cod_Madeira`, `Cod_Item`, `Num_Linha`, `N
 (74, 84, 1, 1, 1, 6),
 (56, 84, 1, 1, 1, 6);
 
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Madeira_Nome_Cientifico`
---
-
-CREATE TABLE IF NOT EXISTS `Madeira_Nome_Cientifico` (
-  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Nome_Cientifico` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Familia` int(10) unsigned DEFAULT NULL,
-  `Cod_Genero` int(10) unsigned DEFAULT NULL,
-  `Cod_Especie` int(10) unsigned DEFAULT NULL,
-  `Cod_Determinador` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`Cod_Madeira`,`Cod_Nome_Cientifico`),
-  KEY `Madeira_Nome_Cientifico_FKIndex1` (`Cod_Madeira`),
-  KEY `Madeira_Nome_Cientifico_FKIndex2` (`Cod_Familia`),
-  KEY `Madeira_Nome_Cientifico_FKIndex3` (`Cod_Genero`),
-  KEY `Madeira_Nome_Cientifico_FKIndex4` (`Cod_Especie`),
-  KEY `Madeira_Nome_Cientifico_FKIndex5` (`Cod_Determinador`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `Madeira_Nome_Cientifico`
---
-
 INSERT INTO `Madeira_Nome_Cientifico` (`Cod_Madeira`, `Cod_Nome_Cientifico`, `Cod_Familia`, `Cod_Genero`, `Cod_Especie`, `Cod_Determinador`) VALUES
 (1, 1, 2, 2, 2, 2),
 (2, 1, 3, 3, 3, 3),
@@ -8206,24 +8155,6 @@ INSERT INTO `Madeira_Nome_Cientifico` (`Cod_Madeira`, `Cod_Nome_Cientifico`, `Co
 (65, 2, 6, 62, 65, 32),
 (76, 2, 25, 76, 67, 49),
 (12, 2, 9, 13, 10, 8);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Madeira_Nome_Internacional`
---
-
-CREATE TABLE IF NOT EXISTS `Madeira_Nome_Internacional` (
-  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Nome_Internacional` int(10) unsigned NOT NULL DEFAULT '0',
-  `Nome_Internacional` varchar(80) DEFAULT NULL,
-  PRIMARY KEY (`Cod_Madeira`,`Cod_Nome_Internacional`),
-  KEY `Madeira_Nome_Internacional_FKIndex1` (`Cod_Madeira`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `Madeira_Nome_Internacional`
---
 
 INSERT INTO `Madeira_Nome_Internacional` (`Cod_Madeira`, `Cod_Nome_Internacional`, `Nome_Internacional`) VALUES
 (1, 1, 'assacú'),
@@ -8612,26 +8543,6 @@ INSERT INTO `Madeira_Nome_Internacional` (`Cod_Madeira`, `Cod_Nome_Internacional
 (76, 9, 'amarillo'),
 (76, 10, 'almendro');
 
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Madeira_Nome_Intern_Fonte`
---
-
-CREATE TABLE IF NOT EXISTS `Madeira_Nome_Intern_Fonte` (
-  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Nome_Internacional` int(10) unsigned NOT NULL DEFAULT '0',
-  `Num_Ordem_Fonte` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Fonte` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`Cod_Madeira`,`Cod_Nome_Internacional`,`Num_Ordem_Fonte`),
-  KEY `Madeira_Nome_Intern_Fonte_FKIndex1` (`Cod_Madeira`,`Cod_Nome_Internacional`),
-  KEY `Madeira_Nome_Intern_Fonte_FKIndex2` (`Cod_Fonte`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `Madeira_Nome_Intern_Fonte`
---
-
 INSERT INTO `Madeira_Nome_Intern_Fonte` (`Cod_Madeira`, `Cod_Nome_Internacional`, `Num_Ordem_Fonte`, `Cod_Fonte`) VALUES
 (1, 1, 1, 2),
 (3, 1, 1, 2),
@@ -8736,24 +8647,247 @@ INSERT INTO `Madeira_Nome_Intern_Fonte` (`Cod_Madeira`, `Cod_Nome_Internacional`
 (78, 1, 1, 3),
 (76, 1, 1, 2);
 
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Madeira_Nome_Intern_Ocorr`
---
-
-CREATE TABLE IF NOT EXISTS `Madeira_Nome_Intern_Ocorr` (
-  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Nome_Internacional` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Ocorrencia` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`Cod_Madeira`,`Cod_Nome_Internacional`,`Cod_Ocorrencia`),
-  KEY `Madeira_Nome_Intern_Ocorr_FKIndex1` (`Cod_Madeira`,`Cod_Nome_Internacional`),
-  KEY `Madeira_Nome_Intern_Ocorr_FKIndex2` (`Cod_Ocorrencia`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `Madeira_Nome_Intern_Ocorr`
---
+INSERT INTO `Ocorrencia` (`Cod_Ocorrencia`, `Nome_Ocorrencia`, `Cod_Tipo_Ocorrencia`, `Cod_Origem`) VALUES
+(1, 'Acre', 5, 'N'),
+(2, 'Amapá', 5, 'N'),
+(3, 'Amazonas', 5, 'N'),
+(4, 'Pará', 5, 'N'),
+(5, 'Rondônia', 5, 'N'),
+(6, 'Roraima', 5, 'N'),
+(7, 'Tocantins', 5, 'N'),
+(8, 'Maranhão', 5, 'N'),
+(9, 'Ceará', 5, 'N'),
+(10, 'Piauí', 5, 'N'),
+(11, 'Paraíba', 5, 'N'),
+(12, 'Pernambuco', 5, 'N'),
+(13, 'Alagoas', 5, 'N'),
+(14, 'Bahia', 5, 'N'),
+(15, 'Rio Grande do Norte', 5, 'N'),
+(16, 'Sergipe', 5, 'N'),
+(17, 'Mato Grosso', 5, 'N'),
+(18, 'Mato Grosso do Sul', 5, 'N'),
+(19, 'Góias', 5, 'N'),
+(20, 'Minas Gerais', 5, 'N'),
+(21, 'Espírito Santo', 5, 'N'),
+(22, 'Rio de Janeiro', 5, 'N'),
+(23, 'São Paulo', 5, 'N'),
+(24, 'Paraná', 5, 'N'),
+(25, 'Santa Catarina', 5, 'N'),
+(26, 'Rio Grande do Sul', 5, 'N'),
+(27, 'Amazônia', 3, 'N'),
+(28, 'Mata Atlântica', 3, 'N'),
+(29, 'África', 1, 'I'),
+(30, 'América Central', 1, 'I'),
+(31, 'América do Norte', 1, 'I'),
+(32, 'América do Sul', 1, 'I'),
+(33, 'Ásia', 1, 'I'),
+(34, 'Europa', 1, 'I'),
+(35, 'Oceania', 1, 'I'),
+(36, 'Afeganistão', 2, 'I'),
+(37, 'África do Sul', 2, 'I'),
+(38, 'Albânia', 2, 'I'),
+(39, 'Alemanha', 2, 'I'),
+(40, 'Andorra', 2, 'I'),
+(41, 'Angola', 2, 'I'),
+(42, 'Antigua e Barbuda', 2, 'I'),
+(43, 'Arábia Saudita', 2, 'I'),
+(44, 'Argélia', 2, 'I'),
+(45, 'Argentina', 2, 'I'),
+(46, 'Armênia', 2, 'I'),
+(47, 'Austrália', 2, 'I'),
+(48, 'Áustria', 2, 'I'),
+(49, 'Azerbaijão', 2, 'I'),
+(50, 'Bahamas', 2, 'I'),
+(51, 'Bangladesh', 2, 'I'),
+(52, 'Barbados', 2, 'I'),
+(53, 'Bahrein', 2, 'I'),
+(54, 'Bélgica', 2, 'I'),
+(55, 'Belize', 2, 'I'),
+(56, 'Benin', 2, 'I'),
+(57, 'Bielorrússia (Belarus)', 2, 'I'),
+(58, 'Bolívia', 2, 'I'),
+(59, 'Bósnia Herzegóvina', 2, 'I'),
+(60, 'Botsuana', 2, 'I'),
+(61, 'Brasil', 2, 'I'),
+(62, 'Brunei', 2, 'I'),
+(63, 'Bulgária', 2, 'I'),
+(64, 'Burkina-Fasso', 2, 'I'),
+(65, 'Burundi', 2, 'I'),
+(66, 'Butão', 2, 'I'),
+(67, 'Cabo Verde', 2, 'I'),
+(68, 'Camarões', 2, 'I'),
+(69, 'Camboja', 2, 'I'),
+(70, 'Canadá', 2, 'I'),
+(71, 'Catar', 2, 'I'),
+(72, 'Cazaquistão', 2, 'I'),
+(73, 'Chade', 2, 'I'),
+(74, 'Chile', 2, 'I'),
+(75, 'China', 2, 'I'),
+(76, 'Chipre', 2, 'I'),
+(77, 'Cingapura', 2, 'I'),
+(78, 'Colômbia', 2, 'I'),
+(79, 'Congo', 2, 'I'),
+(80, 'Comores', 2, 'I'),
+(81, 'Coréia do Norte', 2, 'I'),
+(82, 'Coréia do Sul', 2, 'I'),
+(83, 'Costa do Marfim', 2, 'I'),
+(84, 'Costa Rica', 2, 'I'),
+(85, 'Croácia', 2, 'I'),
+(86, 'Cuba', 2, 'I'),
+(87, 'Dinamarca', 2, 'I'),
+(88, 'Djibuti', 2, 'I'),
+(89, 'Dominica', 2, 'I'),
+(90, 'Egito', 2, 'I'),
+(91, 'El Salvador', 2, 'I'),
+(92, 'Emirados Árabes Unidos', 2, 'I'),
+(93, 'Equador', 2, 'I'),
+(94, 'Eritréia', 2, 'I'),
+(95, 'Escócia', 2, 'I'),
+(96, 'Eslováquia', 2, 'I'),
+(97, 'Eslovênia', 2, 'I'),
+(98, 'Espanha', 2, 'I'),
+(99, 'Estados Unidos', 2, 'I'),
+(100, 'Estônia', 2, 'I'),
+(101, 'Etiópia', 2, 'I'),
+(102, 'Federação Russa', 2, 'I'),
+(103, 'Fiji', 2, 'I'),
+(104, 'Filipinas', 2, 'I'),
+(105, 'Finlândia', 2, 'I'),
+(106, 'Formosa (Taiwan)', 2, 'I'),
+(107, 'França', 2, 'I'),
+(108, 'Gabão', 2, 'I'),
+(109, 'Gâmbia', 2, 'I'),
+(110, 'Gana', 2, 'I'),
+(111, 'Geórgia', 2, 'I'),
+(112, 'Grã Bretanha', 2, 'I'),
+(113, 'Granada', 2, 'I'),
+(114, 'Grécia', 2, 'I'),
+(115, 'Groenlândia', 2, 'I'),
+(116, 'Guatemala', 2, 'I'),
+(117, 'Guiana', 2, 'I'),
+(118, 'Guiana Francesa', 2, 'I'),
+(119, 'Guiné', 2, 'I'),
+(120, 'Guiné Bissau', 2, 'I'),
+(121, 'Guiné Equatorial', 2, 'I'),
+(122, 'Haiti', 2, 'I'),
+(123, 'Holanda', 2, 'I'),
+(124, 'Honduras', 2, 'I'),
+(125, 'Hungria', 2, 'I'),
+(126, 'Iêmen', 2, 'I'),
+(127, 'Ilhas Marshall', 2, 'I'),
+(128, 'Ilhas Salomão', 2, 'I'),
+(129, 'Índia', 2, 'I'),
+(130, 'Indonésia', 2, 'I'),
+(131, 'Irã', 2, 'I'),
+(132, 'Iraque', 2, 'I'),
+(133, 'Irlanda', 2, 'I'),
+(134, 'Irlanda do Norte', 2, 'I'),
+(135, 'Islândia', 2, 'I'),
+(136, 'Israel', 2, 'I'),
+(137, 'Itália', 2, 'I'),
+(138, 'Jamaica', 2, 'I'),
+(139, 'Japão', 2, 'I'),
+(140, 'Jordânia', 2, 'I'),
+(141, 'Kiribati', 2, 'I'),
+(142, 'Kuweit', 2, 'I'),
+(143, 'Laos', 2, 'I'),
+(144, 'Lesoto', 2, 'I'),
+(145, 'Letônia', 2, 'I'),
+(146, 'Líbano', 2, 'I'),
+(147, 'Libéria', 2, 'I'),
+(148, 'Líbia', 2, 'I'),
+(149, 'Liechtenstein', 2, 'I'),
+(150, 'Lituânia', 2, 'I'),
+(151, 'Luxemburgo', 2, 'I'),
+(152, 'Macedônia', 2, 'I'),
+(153, 'Madagascar', 2, 'I'),
+(154, 'Malásia', 2, 'I'),
+(155, 'Malauí', 2, 'I'),
+(156, 'Maldivas', 2, 'I'),
+(157, 'Mali', 2, 'I'),
+(158, 'Malta', 2, 'I'),
+(159, 'Marrocos', 2, 'I'),
+(160, 'Maurício', 2, 'I'),
+(161, 'Mauritânia', 2, 'I'),
+(162, 'México', 2, 'I'),
+(163, 'Mianmar', 2, 'I'),
+(164, 'Micronésia', 2, 'I'),
+(165, 'Moçambique', 2, 'I'),
+(166, 'Moldávia', 2, 'I'),
+(167, 'Mônaco', 2, 'I'),
+(168, 'Mongólia', 2, 'I'),
+(169, 'Namíbia', 2, 'I'),
+(170, 'Naurú', 2, 'I'),
+(171, 'Nepal', 2, 'I'),
+(172, 'Nicarágua', 2, 'I'),
+(173, 'Niger', 2, 'I'),
+(174, 'Nigéria', 2, 'I'),
+(175, 'Noruega', 2, 'I'),
+(176, 'Nova Zelândia', 2, 'I'),
+(177, 'Omã', 2, 'I'),
+(178, 'Panamá', 2, 'I'),
+(179, 'Palau', 2, 'I'),
+(180, 'Papua Nova Guiné', 2, 'I'),
+(181, 'Paraguai', 2, 'I'),
+(182, 'Peru', 2, 'I'),
+(183, 'Polônia', 2, 'I'),
+(184, 'Porto Rico', 2, 'I'),
+(185, 'Portugal', 2, 'I'),
+(186, 'Quênia', 2, 'I'),
+(187, 'Quirguistão', 2, 'I'),
+(188, 'Reino Unido', 2, 'I'),
+(189, 'Rep. Centro-Africana', 2, 'I'),
+(190, 'Rep. Dominicana', 2, 'I'),
+(191, 'República Tcheca', 2, 'I'),
+(192, 'Romênia', 2, 'I'),
+(193, 'Ruanda', 2, 'I'),
+(194, 'Samoa', 2, 'I'),
+(195, 'San Marino', 2, 'I'),
+(196, 'Santa Lúcia', 2, 'I'),
+(197, 'São Cristóvão e Névis', 2, 'I'),
+(198, 'São Tomé e Príncipe', 2, 'I'),
+(199, 'São Vicente e Granadinas', 2, 'I'),
+(200, 'Seicheles', 2, 'I'),
+(201, 'Senegal', 2, 'I'),
+(202, 'Serra Leoa', 2, 'I'),
+(203, 'Sérvia e Montenegro', 2, 'I'),
+(204, 'Síria', 2, 'I'),
+(205, 'Somália', 2, 'I'),
+(206, 'Sri Lanka', 2, 'I'),
+(207, 'Suazilândia', 2, 'I'),
+(208, 'Sudão', 2, 'I'),
+(209, 'Suécia', 2, 'I'),
+(210, 'Suíça', 2, 'I'),
+(211, 'Suriname', 2, 'I'),
+(212, 'Tadjiquistão', 2, 'I'),
+(213, 'Tailândia', 2, 'I'),
+(214, 'Tanzânia', 2, 'I'),
+(215, 'Togo', 2, 'I'),
+(216, 'Tonga', 2, 'I'),
+(217, 'Trinidad e Tobago', 2, 'I'),
+(218, 'Tunísia', 2, 'I'),
+(219, 'Turcomenistão', 2, 'I'),
+(220, 'Turquia', 2, 'I'),
+(221, 'Tuvalu', 2, 'I'),
+(222, 'Ucrânia', 2, 'I'),
+(223, 'Uganda', 2, 'I'),
+(224, 'Uruguai', 2, 'I'),
+(225, 'Uzbequistão', 2, 'I'),
+(226, 'Vanuatu', 2, 'I'),
+(227, 'Vaticano', 2, 'I'),
+(228, 'Venezuela', 2, 'I'),
+(229, 'Vietnã', 2, 'I'),
+(230, 'Zaire', 2, 'I'),
+(231, 'Zâmbia', 2, 'I'),
+(232, 'Zimbábue', 2, 'I'),
+(233, 'Inglaterra', 2, 'I'),
+(234, 'Norte', 4, 'N'),
+(235, 'Nordeste', 4, 'N'),
+(236, 'Centro-Oeste', 4, 'N'),
+(237, 'Sudeste', 4, 'N'),
+(238, 'Sul', 4, 'N'),
+(240, 'Guadalupe', 2, 'I'),
+(242, 'Paquistão', 2, 'I');
 
 INSERT INTO `Madeira_Nome_Intern_Ocorr` (`Cod_Madeira`, `Cod_Nome_Internacional`, `Cod_Ocorrencia`) VALUES
 (1, 3, 58),
@@ -8957,25 +9091,6 @@ INSERT INTO `Madeira_Nome_Intern_Ocorr` (`Cod_Madeira`, `Cod_Nome_Internacional`
 (78, 2, 107),
 (78, 3, 39),
 (78, 4, 123);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Madeira_Nome_Popular`
---
-
-CREATE TABLE IF NOT EXISTS `Madeira_Nome_Popular` (
-  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Nome_Popular` int(10) unsigned NOT NULL DEFAULT '0',
-  `Nome_Popular` varchar(100) DEFAULT NULL,
-  `Ind_Nome_Principal` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`Cod_Madeira`,`Cod_Nome_Popular`),
-  KEY `Madeira_Nome_Popular_FKIndex1` (`Cod_Madeira`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `Madeira_Nome_Popular`
---
 
 INSERT INTO `Madeira_Nome_Popular` (`Cod_Madeira`, `Cod_Nome_Popular`, `Nome_Popular`, `Ind_Nome_Principal`) VALUES
 (1, 1, 'açacu', 1),
@@ -9651,24 +9766,6 @@ INSERT INTO `Madeira_Nome_Popular` (`Cod_Madeira`, `Cod_Nome_Popular`, `Nome_Pop
 (76, 4, 'timboritá', 0),
 (76, 5, 'jataí-amarelo', 0),
 (76, 6, 'guarajuba', 0);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Madeira_Ocorrencia`
---
-
-CREATE TABLE IF NOT EXISTS `Madeira_Ocorrencia` (
-  `Cod_Madeira` int(10) unsigned NOT NULL DEFAULT '0',
-  `Cod_Ocorrencia` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`Cod_Madeira`,`Cod_Ocorrencia`),
-  KEY `Madeira_Ocorrencia_FKIndex1` (`Cod_Madeira`),
-  KEY `Madeira_Ocorrencia_FKIndex2` (`Cod_Ocorrencia`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `Madeira_Ocorrencia`
---
 
 INSERT INTO `Madeira_Ocorrencia` (`Cod_Madeira`, `Cod_Ocorrencia`) VALUES
 (1, 1),
@@ -10565,357 +10662,3 @@ INSERT INTO `Madeira_Ocorrencia` (`Cod_Madeira`, `Cod_Ocorrencia`) VALUES
 (80, 6),
 (80, 8),
 (80, 17);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Ocorrencia`
---
-
-CREATE TABLE IF NOT EXISTS `Ocorrencia` (
-  `Cod_Ocorrencia` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Nome_Ocorrencia` varchar(80) DEFAULT NULL,
-  `Cod_Tipo_Ocorrencia` int(10) unsigned DEFAULT NULL,
-  `Cod_Origem` char(1) DEFAULT NULL,
-  PRIMARY KEY (`Cod_Ocorrencia`),
-  KEY `Ocorrencia_FKIndex1` (`Cod_Tipo_Ocorrencia`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=243 ;
-
---
--- Extraindo dados da tabela `Ocorrencia`
---
-
-INSERT INTO `Ocorrencia` (`Cod_Ocorrencia`, `Nome_Ocorrencia`, `Cod_Tipo_Ocorrencia`, `Cod_Origem`) VALUES
-(1, 'Acre', 5, 'N'),
-(2, 'Amapá', 5, 'N'),
-(3, 'Amazonas', 5, 'N'),
-(4, 'Pará', 5, 'N'),
-(5, 'Rondônia', 5, 'N'),
-(6, 'Roraima', 5, 'N'),
-(7, 'Tocantins', 5, 'N'),
-(8, 'Maranhão', 5, 'N'),
-(9, 'Ceará', 5, 'N'),
-(10, 'Piauí', 5, 'N'),
-(11, 'Paraíba', 5, 'N'),
-(12, 'Pernambuco', 5, 'N'),
-(13, 'Alagoas', 5, 'N'),
-(14, 'Bahia', 5, 'N'),
-(15, 'Rio Grande do Norte', 5, 'N'),
-(16, 'Sergipe', 5, 'N'),
-(17, 'Mato Grosso', 5, 'N'),
-(18, 'Mato Grosso do Sul', 5, 'N'),
-(19, 'Góias', 5, 'N'),
-(20, 'Minas Gerais', 5, 'N'),
-(21, 'Espírito Santo', 5, 'N'),
-(22, 'Rio de Janeiro', 5, 'N'),
-(23, 'São Paulo', 5, 'N'),
-(24, 'Paraná', 5, 'N'),
-(25, 'Santa Catarina', 5, 'N'),
-(26, 'Rio Grande do Sul', 5, 'N'),
-(27, 'Amazônia', 3, 'N'),
-(28, 'Mata Atlântica', 3, 'N'),
-(29, 'África', 1, 'I'),
-(30, 'América Central', 1, 'I'),
-(31, 'América do Norte', 1, 'I'),
-(32, 'América do Sul', 1, 'I'),
-(33, 'Ásia', 1, 'I'),
-(34, 'Europa', 1, 'I'),
-(35, 'Oceania', 1, 'I'),
-(36, 'Afeganistão', 2, 'I'),
-(37, 'África do Sul', 2, 'I'),
-(38, 'Albânia', 2, 'I'),
-(39, 'Alemanha', 2, 'I'),
-(40, 'Andorra', 2, 'I'),
-(41, 'Angola', 2, 'I'),
-(42, 'Antigua e Barbuda', 2, 'I'),
-(43, 'Arábia Saudita', 2, 'I'),
-(44, 'Argélia', 2, 'I'),
-(45, 'Argentina', 2, 'I'),
-(46, 'Armênia', 2, 'I'),
-(47, 'Austrália', 2, 'I'),
-(48, 'Áustria', 2, 'I'),
-(49, 'Azerbaijão', 2, 'I'),
-(50, 'Bahamas', 2, 'I'),
-(51, 'Bangladesh', 2, 'I'),
-(52, 'Barbados', 2, 'I'),
-(53, 'Bahrein', 2, 'I'),
-(54, 'Bélgica', 2, 'I'),
-(55, 'Belize', 2, 'I'),
-(56, 'Benin', 2, 'I'),
-(57, 'Bielorrússia (Belarus)', 2, 'I'),
-(58, 'Bolívia', 2, 'I'),
-(59, 'Bósnia Herzegóvina', 2, 'I'),
-(60, 'Botsuana', 2, 'I'),
-(61, 'Brasil', 2, 'I'),
-(62, 'Brunei', 2, 'I'),
-(63, 'Bulgária', 2, 'I'),
-(64, 'Burkina-Fasso', 2, 'I'),
-(65, 'Burundi', 2, 'I'),
-(66, 'Butão', 2, 'I'),
-(67, 'Cabo Verde', 2, 'I'),
-(68, 'Camarões', 2, 'I'),
-(69, 'Camboja', 2, 'I'),
-(70, 'Canadá', 2, 'I'),
-(71, 'Catar', 2, 'I'),
-(72, 'Cazaquistão', 2, 'I'),
-(73, 'Chade', 2, 'I'),
-(74, 'Chile', 2, 'I'),
-(75, 'China', 2, 'I'),
-(76, 'Chipre', 2, 'I'),
-(77, 'Cingapura', 2, 'I'),
-(78, 'Colômbia', 2, 'I'),
-(79, 'Congo', 2, 'I'),
-(80, 'Comores', 2, 'I'),
-(81, 'Coréia do Norte', 2, 'I'),
-(82, 'Coréia do Sul', 2, 'I'),
-(83, 'Costa do Marfim', 2, 'I'),
-(84, 'Costa Rica', 2, 'I'),
-(85, 'Croácia', 2, 'I'),
-(86, 'Cuba', 2, 'I'),
-(87, 'Dinamarca', 2, 'I'),
-(88, 'Djibuti', 2, 'I'),
-(89, 'Dominica', 2, 'I'),
-(90, 'Egito', 2, 'I'),
-(91, 'El Salvador', 2, 'I'),
-(92, 'Emirados Árabes Unidos', 2, 'I'),
-(93, 'Equador', 2, 'I'),
-(94, 'Eritréia', 2, 'I'),
-(95, 'Escócia', 2, 'I'),
-(96, 'Eslováquia', 2, 'I'),
-(97, 'Eslovênia', 2, 'I'),
-(98, 'Espanha', 2, 'I'),
-(99, 'Estados Unidos', 2, 'I'),
-(100, 'Estônia', 2, 'I'),
-(101, 'Etiópia', 2, 'I'),
-(102, 'Federação Russa', 2, 'I'),
-(103, 'Fiji', 2, 'I'),
-(104, 'Filipinas', 2, 'I'),
-(105, 'Finlândia', 2, 'I'),
-(106, 'Formosa (Taiwan)', 2, 'I'),
-(107, 'França', 2, 'I'),
-(108, 'Gabão', 2, 'I'),
-(109, 'Gâmbia', 2, 'I'),
-(110, 'Gana', 2, 'I'),
-(111, 'Geórgia', 2, 'I'),
-(112, 'Grã Bretanha', 2, 'I'),
-(113, 'Granada', 2, 'I'),
-(114, 'Grécia', 2, 'I'),
-(115, 'Groenlândia', 2, 'I'),
-(116, 'Guatemala', 2, 'I'),
-(117, 'Guiana', 2, 'I'),
-(118, 'Guiana Francesa', 2, 'I'),
-(119, 'Guiné', 2, 'I'),
-(120, 'Guiné Bissau', 2, 'I'),
-(121, 'Guiné Equatorial', 2, 'I'),
-(122, 'Haiti', 2, 'I'),
-(123, 'Holanda', 2, 'I'),
-(124, 'Honduras', 2, 'I'),
-(125, 'Hungria', 2, 'I'),
-(126, 'Iêmen', 2, 'I'),
-(127, 'Ilhas Marshall', 2, 'I'),
-(128, 'Ilhas Salomão', 2, 'I'),
-(129, 'Índia', 2, 'I'),
-(130, 'Indonésia', 2, 'I'),
-(131, 'Irã', 2, 'I'),
-(132, 'Iraque', 2, 'I'),
-(133, 'Irlanda', 2, 'I'),
-(134, 'Irlanda do Norte', 2, 'I'),
-(135, 'Islândia', 2, 'I'),
-(136, 'Israel', 2, 'I'),
-(137, 'Itália', 2, 'I'),
-(138, 'Jamaica', 2, 'I'),
-(139, 'Japão', 2, 'I'),
-(140, 'Jordânia', 2, 'I'),
-(141, 'Kiribati', 2, 'I'),
-(142, 'Kuweit', 2, 'I'),
-(143, 'Laos', 2, 'I'),
-(144, 'Lesoto', 2, 'I'),
-(145, 'Letônia', 2, 'I'),
-(146, 'Líbano', 2, 'I'),
-(147, 'Libéria', 2, 'I'),
-(148, 'Líbia', 2, 'I'),
-(149, 'Liechtenstein', 2, 'I'),
-(150, 'Lituânia', 2, 'I'),
-(151, 'Luxemburgo', 2, 'I'),
-(152, 'Macedônia', 2, 'I'),
-(153, 'Madagascar', 2, 'I'),
-(154, 'Malásia', 2, 'I'),
-(155, 'Malauí', 2, 'I'),
-(156, 'Maldivas', 2, 'I'),
-(157, 'Mali', 2, 'I'),
-(158, 'Malta', 2, 'I'),
-(159, 'Marrocos', 2, 'I'),
-(160, 'Maurício', 2, 'I'),
-(161, 'Mauritânia', 2, 'I'),
-(162, 'México', 2, 'I'),
-(163, 'Mianmar', 2, 'I'),
-(164, 'Micronésia', 2, 'I'),
-(165, 'Moçambique', 2, 'I'),
-(166, 'Moldávia', 2, 'I'),
-(167, 'Mônaco', 2, 'I'),
-(168, 'Mongólia', 2, 'I'),
-(169, 'Namíbia', 2, 'I'),
-(170, 'Naurú', 2, 'I'),
-(171, 'Nepal', 2, 'I'),
-(172, 'Nicarágua', 2, 'I'),
-(173, 'Niger', 2, 'I'),
-(174, 'Nigéria', 2, 'I'),
-(175, 'Noruega', 2, 'I'),
-(176, 'Nova Zelândia', 2, 'I'),
-(177, 'Omã', 2, 'I'),
-(178, 'Panamá', 2, 'I'),
-(179, 'Palau', 2, 'I'),
-(180, 'Papua Nova Guiné', 2, 'I'),
-(181, 'Paraguai', 2, 'I'),
-(182, 'Peru', 2, 'I'),
-(183, 'Polônia', 2, 'I'),
-(184, 'Porto Rico', 2, 'I'),
-(185, 'Portugal', 2, 'I'),
-(186, 'Quênia', 2, 'I'),
-(187, 'Quirguistão', 2, 'I'),
-(188, 'Reino Unido', 2, 'I'),
-(189, 'Rep. Centro-Africana', 2, 'I'),
-(190, 'Rep. Dominicana', 2, 'I'),
-(191, 'República Tcheca', 2, 'I'),
-(192, 'Romênia', 2, 'I'),
-(193, 'Ruanda', 2, 'I'),
-(194, 'Samoa', 2, 'I'),
-(195, 'San Marino', 2, 'I'),
-(196, 'Santa Lúcia', 2, 'I'),
-(197, 'São Cristóvão e Névis', 2, 'I'),
-(198, 'São Tomé e Príncipe', 2, 'I'),
-(199, 'São Vicente e Granadinas', 2, 'I'),
-(200, 'Seicheles', 2, 'I'),
-(201, 'Senegal', 2, 'I'),
-(202, 'Serra Leoa', 2, 'I'),
-(203, 'Sérvia e Montenegro', 2, 'I'),
-(204, 'Síria', 2, 'I'),
-(205, 'Somália', 2, 'I'),
-(206, 'Sri Lanka', 2, 'I'),
-(207, 'Suazilândia', 2, 'I'),
-(208, 'Sudão', 2, 'I'),
-(209, 'Suécia', 2, 'I'),
-(210, 'Suíça', 2, 'I'),
-(211, 'Suriname', 2, 'I'),
-(212, 'Tadjiquistão', 2, 'I'),
-(213, 'Tailândia', 2, 'I'),
-(214, 'Tanzânia', 2, 'I'),
-(215, 'Togo', 2, 'I'),
-(216, 'Tonga', 2, 'I'),
-(217, 'Trinidad e Tobago', 2, 'I'),
-(218, 'Tunísia', 2, 'I'),
-(219, 'Turcomenistão', 2, 'I'),
-(220, 'Turquia', 2, 'I'),
-(221, 'Tuvalu', 2, 'I'),
-(222, 'Ucrânia', 2, 'I'),
-(223, 'Uganda', 2, 'I'),
-(224, 'Uruguai', 2, 'I'),
-(225, 'Uzbequistão', 2, 'I'),
-(226, 'Vanuatu', 2, 'I'),
-(227, 'Vaticano', 2, 'I'),
-(228, 'Venezuela', 2, 'I'),
-(229, 'Vietnã', 2, 'I'),
-(230, 'Zaire', 2, 'I'),
-(231, 'Zâmbia', 2, 'I'),
-(232, 'Zimbábue', 2, 'I'),
-(233, 'Inglaterra', 2, 'I'),
-(234, 'Norte', 4, 'N'),
-(235, 'Nordeste', 4, 'N'),
-(236, 'Centro-Oeste', 4, 'N'),
-(237, 'Sudeste', 4, 'N'),
-(238, 'Sul', 4, 'N'),
-(240, 'Guadalupe', 2, 'I'),
-(242, 'Paquistão', 2, 'I');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Referencia`
---
-
-CREATE TABLE IF NOT EXISTS `Referencia` (
-  `Cod_Referencia` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Nome_Referencia` varchar(50) DEFAULT NULL,
-  `Nome_Completo_Referencia` varchar(150) DEFAULT NULL,
-  `Desc_Endereco_Site` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`Cod_Referencia`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
-
---
--- Extraindo dados da tabela `Referencia`
---
-
-INSERT INTO `Referencia` (`Cod_Referencia`, `Nome_Referencia`, `Nome_Completo_Referencia`, `Desc_Endereco_Site`) VALUES
-(1, 'IPT', 'Instituto de Pesquisas Tecnológicas do Estado de São Paulo - IPT', 'www.ipt.br'),
-(2, 'ATIBT', 'Association Technique Internationale des Bois Tropicaux', 'www.atibt.com'),
-(3, 'BSI', 'British Standards Institution', 'www.bsi-global.com'),
-(4, 'Berni et al.', 'Berni, C. A.; Bolza, E.; Christensen, F.J.', ''),
-(5, 'Chudnoff', 'Chudnoff, M.', ''),
-(6, 'CTFT/INPA', 'Centre Technique Forestier Tropical - CTFT / Instituto Nacional de Pesquisas da Amazônia - INPA', ''),
-(7, 'IBAMA', 'Instituto Brasileiro do Meio Ambiente e dos Recursos Naturais Renováveis - IBAMA', 'www.ibama.gov.br'),
-(8, 'Jankowsky', 'Jankowsky, I. P. (Coord.)', ''),
-(9, 'SUDAM/IPT', 'Superintendência do Desenvolvimento da Amazônia - SUDAM/Instituto de Pesquisas Tecnológicas do Estado de São Paulo - IPT', ''),
-(10, 'IBDF', 'Instituto Brasilleiro de Desenvolvimento Florestal - IBDF', ''),
-(11, 'INPA', 'Instituto Nacional de Pesquisas da Amazônia - INPA', 'www.inpa.gov.br'),
-(12, 'Jesus et al.', 'Jesus, M. A.; Morais, J. W.; Abreu, R. L. S.; Cardias, M. F. C.', ''),
-(13, 'Fosco Mucci et al.', 'Fosco Mucci, E. S.; LOPEZ, G. A. C.; Montagna, R. G.', ''),
-(14, 'Lopez', 'Lopez, G. A. C.', NULL),
-(15, 'Angyalossy-Alfonso', 'Angyalossy-Alfonso, V.', ''),
-(16, 'Silva', NULL, NULL),
-(17, 'Brito Neto et al.', NULL, NULL),
-(18, 'IPT/SCTDE', 'Instituto de Pesquisas Tecnológicas do Estado de São Paulo - IPT / Secretaria da Ciência, Tecnologia e Desenvolvimento Econômico -  SCTDE', ''),
-(19, 'Abreu & Silva', 'Abreu, R. L. S.; Silva, K. E. S.', ''),
-(20, 'Lepage', 'Lepage, E. S.', NULL),
-(21, 'Brazolin & Tomazello', 'Brazolin, S.; Tomazello Filho, M.', NULL),
-(22, 'Brotero', 'Brotero, F.A.', ''),
-(23, 'Mainieri', 'Mainieri, C.', ''),
-(24, 'Prospect', 'Prospect 2.1 for Windows', ''),
-(25, 'Camargos  et  al.', 'Camargos, J.A.C.; Coradin, V.T.R; Czarneski, C.M.; Oliveira, D. de; Meguerditchian, I.', ''),
-(26, 'CIRAD', '', ''),
-(27, 'Flynn Jr. & Holder', 'Flynn Jr., J.H. & Holder, C.D.', '');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Tipo_Foto`
---
-
-CREATE TABLE IF NOT EXISTS `Tipo_Foto` (
-  `Cod_Tipo_Foto` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Desc_Tipo_Foto` varchar(100) DEFAULT NULL,
-  `Num_Ordem_Tipo_Foto` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`Cod_Tipo_Foto`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
-
---
--- Extraindo dados da tabela `Tipo_Foto`
---
-
-INSERT INTO `Tipo_Foto` (`Cod_Tipo_Foto`, `Desc_Tipo_Foto`, `Num_Ordem_Tipo_Foto`) VALUES
-(1, 'Face tangencial', 1),
-(2, 'Face radial', 2),
-(3, 'Face mista', 3),
-(4, 'Fotomacrografia (10x)', 4);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Tipo_Ocorrencia`
---
-
-CREATE TABLE IF NOT EXISTS `Tipo_Ocorrencia` (
-  `Cod_Tipo_Ocorrencia` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Desc_Tipo_Ocorrencia` varchar(80) DEFAULT NULL,
-  PRIMARY KEY (`Cod_Tipo_Ocorrencia`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
-
---
--- Extraindo dados da tabela `Tipo_Ocorrencia`
---
-
-INSERT INTO `Tipo_Ocorrencia` (`Cod_Tipo_Ocorrencia`, `Desc_Tipo_Ocorrencia`) VALUES
-(1, 'Continente'),
-(2, 'País'),
-(3, 'Local'),
-(4, 'Região'),
-(5, 'Estado');
