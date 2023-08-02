@@ -1,10 +1,28 @@
 from django.contrib import admin
 
-# Register your models here.
-from.models import Category, Color, Madeira,MadeirasAttribute, Banner
+from.models import *
 
-admin.site.register(Category)
-admin.site.register(Color)
+admin.site.register(Conteudo)
+admin.site.register(Determinador)
+admin.site.register(Especie)
+admin.site.register(Familia)
+admin.site.register(Fonte)
+admin.site.register(Genero)
+admin.site.register(Item)
+admin.site.register(ItemConteudo)
 admin.site.register(Madeira)
-admin.site.register(MadeirasAttribute)
-admin.site.register(Banner)
+admin.site.register(MadeiraFoto)
+admin.site.register(MadeiraItem)
+admin.site.register(MadeiraItemFonte)
+admin.site.register(MadeiraItemObsFonte)
+admin.site.register(MadeiraItemObservacao)
+admin.site.register(MadeiraNomeCientifico)
+admin.site.register(MadeiraNomeInternFonte)
+admin.site.register(MadeiraNomeInternOcorr)
+admin.site.register(MadeiraNomeInternacional)
+admin.site.register(MadeiraNomePopular)
+admin.site.register(MadeiraOcorrencia)
+admin.site.register(Ocorrencia)
+admin.site.register(Referencia)
+admin.site.register(TipoFoto)
+admin.site.register(TipoOcorrencia)
