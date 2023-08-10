@@ -119,19 +119,11 @@ from Madeira_Item MI
 left join Conteudo C on IC.Cod_Conteudo = C.Cod_Conteudo
 where MI.Cod_Madeira = 14 AND I.Cod_Item > 62  AND I.Cod_Item < 77;
 
--- USOS
-SELECT I.Cod_Item, I.Nome_Item, C.Desc_Conteudo
-from Madeira_Item MI
-         left join Item I on MI.Cod_Item = I.Cod_Item
-           right join Item_Conteudo IC on I.Cod_Item = IC.Cod_Item
-join Conteudo C on IC.Cod_Conteudo = C.Cod_Conteudo
-where MI.Cod_Madeira = 14 AND I.Cod_Item > 76;
-
 -- campos usados apenas para pesquisa
 SELECT I.Cod_Item, I.Nome_Item, C.Desc_Conteudo
 from Madeira_Item MI
          left join Item I on MI.Cod_Item = I.Cod_Item
-left join Item_Conteudo IC on I.Cod_Item = IC.Cod_Item
+          left join Item_Conteudo IC on I.Cod_Item = IC.Cod_Item
 join Conteudo C on IC.Cod_Conteudo = C.Cod_Conteudo AND MI.Cod_Conteudo = C.Cod_Conteudo
 where MI.Cod_Madeira = 14 AND I.Cod_Item > 76;
 
