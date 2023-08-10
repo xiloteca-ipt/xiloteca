@@ -15,8 +15,6 @@ class Conteudo(models.Model):
         managed = True
         db_table = 'Conteudo'
 
-    def __str__(self):
-        return self.desc_conteudo
 
 class Determinador(models.Model):
     cod_determinador = models.AutoField(db_column='Cod_Determinador', primary_key=True)  # Field name made lowercase.
@@ -25,9 +23,6 @@ class Determinador(models.Model):
     class Meta:
         managed = True
         db_table = 'Determinador'
-    
-    def __str__(self):
-        return self.nome_determinador
 
 
 class Especie(models.Model):
@@ -38,9 +33,7 @@ class Especie(models.Model):
         managed = True
         db_table = 'Especie'
 
-    def __str__(self):
-        return self.nome_especie
-    
+
 class Familia(models.Model):
     cod_familia = models.AutoField(db_column='Cod_Familia', primary_key=True)  # Field name made lowercase.
     nome_familia = models.CharField(db_column='Nome_Familia', max_length=100, blank=True, null=True)  # Field name made lowercase.
@@ -48,9 +41,6 @@ class Familia(models.Model):
     class Meta:
         managed = True
         db_table = 'Familia'
-
-    def __str__(self):
-        return self.nome_familia
 
 
 class Fonte(models.Model):
@@ -63,11 +53,7 @@ class Fonte(models.Model):
         managed = True
         db_table = 'Fonte'
 
-    def __str__(self):
-        return self.desc_num_fonte
-    def __str__(self):
-        return self.desc_obs_fonte
-       
+
 class Genero(models.Model):
     cod_genero = models.AutoField(db_column='Cod_Genero', primary_key=True)  # Field name made lowercase.
     nome_genero = models.CharField(db_column='Nome_Genero', max_length=100, blank=True, null=True)  # Field name made lowercase.
@@ -75,8 +61,7 @@ class Genero(models.Model):
     class Meta:
         managed = True
         db_table = 'Genero'
-    def __str__(self):
-        return self.nome_genero
+
 
 class Item(models.Model):
     cod_item = models.PositiveIntegerField(db_column='Cod_Item', primary_key=True)  # Field name made lowercase.
@@ -98,11 +83,7 @@ class Item(models.Model):
     class Meta:
         managed = True
         db_table = 'Item'
-        verbose_name = "Item"
-        verbose_name_plural = "Itens"
 
-    def __str__(self):
-        return str(self.nome_item)
 
 class ItemConteudo(models.Model):
     cod_item = models.OneToOneField(Item, models.DO_NOTHING, db_column='Cod_Item', primary_key=True)  # Field name made lowercase. The composite primary key (Cod_Item, Cod_Conteudo) found, that is not supported. The first column is selected.
@@ -113,8 +94,6 @@ class ItemConteudo(models.Model):
         db_table = 'Item_Conteudo'
         unique_together = (('cod_item', 'cod_conteudo'),)
 
-    def __str__(self):
-        return str(self.cod_conteudo)
 
 class Madeira(models.Model):
     cod_madeira = models.PositiveIntegerField(db_column='Cod_Madeira', primary_key=True)  # Field name made lowercase.
@@ -128,9 +107,7 @@ class Madeira(models.Model):
         managed = True
         db_table = 'Madeira'
 
-    def __str__(self):
-        return str(self.cod_status_madeira)
-    
+
 class MadeiraFoto(models.Model):
     cod_madeira = models.OneToOneField(Madeira, models.DO_NOTHING, db_column='Cod_Madeira', primary_key=True)  # Field name made lowercase. The composite primary key (Cod_Madeira, Cod_Foto) found, that is not supported. The first column is selected.
     cod_foto = models.PositiveIntegerField(db_column='Cod_Foto')  # Field name made lowercase.
@@ -143,11 +120,7 @@ class MadeiraFoto(models.Model):
         managed = True
         db_table = 'Madeira_Foto'
         unique_together = (('cod_madeira', 'cod_foto'),)
-        verbose_name = "Madeira - Foto"
-        verbose_name_plural = "Madeira - Fotos"
 
-    def __str__(self):
-        return str(self.nome_arquivo_foto)
 
 class MadeiraItem(models.Model):
     cod_madeira = models.OneToOneField(Madeira, models.DO_NOTHING, db_column='Cod_Madeira', primary_key=True)  # Field name made lowercase. The composite primary key (Cod_Madeira, Cod_Item, Num_Linha) found, that is not supported. The first column is selected.
@@ -162,11 +135,7 @@ class MadeiraItem(models.Model):
         managed = True
         db_table = 'Madeira_Item'
         unique_together = (('cod_madeira', 'cod_item', 'num_linha'),)
-        verbose_name = "Madeira - Item  "
-        verbose_name_plural = "Madeira - Itens"
 
-    def __str__(self):
-        return (self.desc_item)
 
 class MadeiraItemFonte(models.Model):
     cod_madeira = models.OneToOneField(Madeira, models.DO_NOTHING, db_column='Cod_Madeira', primary_key=True)  # Field name made lowercase. The composite primary key (Cod_Madeira, Cod_Item, Num_Linha, Num_Ordem_Fonte) found, that is not supported. The first column is selected.
@@ -179,9 +148,6 @@ class MadeiraItemFonte(models.Model):
         managed = True
         db_table = 'Madeira_Item_Fonte'
         unique_together = (('cod_madeira', 'cod_item', 'num_linha', 'num_ordem_fonte'),)
-        verbose_name = "Madeira - Item fonte"
-        verbose_name_plural = "Madeira - Itens fontes"
-
 
 
 class MadeiraItemObsFonte(models.Model):
@@ -210,8 +176,6 @@ class MadeiraItemObservacao(models.Model):
         db_table = 'Madeira_Item_Observacao'
         unique_together = (('cod_madeira', 'cod_item', 'num_linha', 'num_obs'),)
 
-    def __str__(self):
-        return (self.desc_obs)
 
 class MadeiraNomeCientifico(models.Model):
     cod_madeira = models.OneToOneField(Madeira, models.DO_NOTHING, db_column='Cod_Madeira', primary_key=True)  # Field name made lowercase. The composite primary key (Cod_Madeira, Cod_Nome_Cientifico) found, that is not supported. The first column is selected.
@@ -318,10 +282,6 @@ class TipoFoto(models.Model):
 class TipoOcorrencia(models.Model):
     cod_tipo_ocorrencia = models.AutoField(db_column='Cod_Tipo_Ocorrencia', primary_key=True)  # Field name made lowercase.
     desc_tipo_ocorrencia = models.CharField(db_column='Desc_Tipo_Ocorrencia', max_length=80, blank=True, null=True)  # Field name made lowercase.
-
-    def __str__(self):
-        return self.desc_tipo_ocorrencia
-
 
     class Meta:
         managed = True
