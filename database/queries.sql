@@ -38,3 +38,103 @@ from Madeira_Ocorrencia MO
          join Tipo_Ocorrencia T on O.Cod_Tipo_Ocorrencia = T.Cod_Tipo_Ocorrencia
 where M.Cod_Madeira = 14;
 
+-- caracteristicas gerais
+SELECT I.Cod_Item, I.Nome_Item, MI.Desc_Item
+from Madeira_Item MI
+         join Item I on MI.Cod_Item = I.Cod_Item
+where MI.Cod_Madeira = 14 AND I.Cod_Item > 0  AND I.Cod_Item < 13;
+
+-- Fonte
+SELECT * from Madeira_Item_Observacao
+where Cod_Madeira = 14
+   and Cod_Item = 3
+ORDER BY Cod_Item, Num_Obs, Num_Linha
+
+-- Durabilidade / Tratamento
+SELECT I.Cod_Item, I.Nome_Item, MI.Desc_Item
+from Madeira_Item MI
+         join Item I on MI.Cod_Item = I.Cod_Item
+where MI.Cod_Madeira = 14 AND I.Cod_Item IN (13,14,15);
+
+-- Características de processamento
+SELECT I.Cod_Item, I.Nome_Item, MI.Desc_Item
+from Madeira_Item MI
+         join Item I on MI.Cod_Item = I.Cod_Item
+where MI.Cod_Madeira = 14 AND I.Cod_Item IN (16,17,18);
+
+-- item-observação (não possui título visível)
+SELECT * from Madeira_Item_Observacao
+where Cod_Madeira = 14
+   and Cod_Item = 18
+ORDER BY Cod_Item, Num_Obs, Num_Linha
+
+-- propriedades físicas
+SELECT I.Cod_Item, I.Nome_Item, MI.Valor_Inteiro, MI.Valor_Decimal, I.Desc_Unidade_Medida
+from Madeira_Item MI
+         left join Item I on MI.Cod_Item = I.Cod_Item
+where MI.Cod_Madeira = 14 AND I.Cod_Item > 18  AND I.Cod_Item < 30;
+
+SELECT * from Madeira_Item_Observacao
+where Cod_Madeira = 14
+    and Cod_Item = 25
+ORDER BY Cod_Item, Num_Obs, Num_Linha
+
+
+-- propriedades mecanicas
+SELECT I.Cod_Item, I.Nome_Item, MI.Valor_Inteiro, MI.Valor_Decimal, I.Desc_Unidade_Medida
+from Madeira_Item MI
+         left join Item I on MI.Cod_Item = I.Cod_Item
+where MI.Cod_Madeira = 14 AND I.Cod_Item > 29  AND I.Cod_Item < 39;
+
+SELECT * from Madeira_Item_Observacao
+where Cod_Madeira = 14
+    and Cod_Item = 31
+ORDER BY Cod_Item, Num_Obs, Num_Linha
+
+SELECT I.Cod_Item, I.Nome_Item, MI.Valor_Inteiro, MI.Valor_Decimal, I.Desc_Unidade_Medida
+from Madeira_Item MI
+         left join Item I on MI.Cod_Item = I.Cod_Item
+where MI.Cod_Madeira = 14 AND I.Cod_Item > 38  AND I.Cod_Item < 51;
+
+SELECT * from Madeira_Item_Observacao
+where Cod_Madeira = 14
+    and Cod_Item = 39
+ORDER BY Cod_Item, Num_Obs, Num_Linha
+
+SELECT I.Cod_Item, I.Nome_Item, MI.Valor_Inteiro, MI.Valor_Decimal, I.Desc_Unidade_Medida
+from Madeira_Item MI
+         left join Item I on MI.Cod_Item = I.Cod_Item
+where MI.Cod_Madeira = 14 AND I.Cod_Item > 50  AND I.Cod_Item < 63;
+
+SELECT * from Madeira_Item_Observacao
+where Cod_Madeira = 14
+    and Cod_Item = 51
+ORDER BY Cod_Item, Num_Obs, Num_Linha
+
+-- USOS
+SELECT I.Cod_Item, I.Nome_Item, C.Desc_Conteudo
+from Madeira_Item MI
+         left join Item I on MI.Cod_Item = I.Cod_Item
+            left join Item_Conteudo IC on I.Cod_Item = IC.Cod_Item
+left join Conteudo C on IC.Cod_Conteudo = C.Cod_Conteudo
+where MI.Cod_Madeira = 14 AND I.Cod_Item > 62  AND I.Cod_Item < 77;
+
+-- USOS
+SELECT I.Cod_Item, I.Nome_Item, C.Desc_Conteudo
+from Madeira_Item MI
+         left join Item I on MI.Cod_Item = I.Cod_Item
+           right join Item_Conteudo IC on I.Cod_Item = IC.Cod_Item
+join Conteudo C on IC.Cod_Conteudo = C.Cod_Conteudo
+where MI.Cod_Madeira = 14 AND I.Cod_Item > 76;
+
+-- campos usados apenas para pesquisa
+SELECT I.Cod_Item, I.Nome_Item, C.Desc_Conteudo
+from Madeira_Item MI
+         left join Item I on MI.Cod_Item = I.Cod_Item
+left join Item_Conteudo IC on I.Cod_Item = IC.Cod_Item
+join Conteudo C on IC.Cod_Conteudo = C.Cod_Conteudo AND MI.Cod_Conteudo = C.Cod_Conteudo
+where MI.Cod_Madeira = 14 AND I.Cod_Item > 76;
+
+-- sao usados apenas como filtro de pesquisa os itens com Cod_Item > 76
+
+-- não há registros para o Cod_Item > 81
