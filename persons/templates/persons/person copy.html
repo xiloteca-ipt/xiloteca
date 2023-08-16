@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #my_form{
+            width: auto;
+            padding: 40px 40px;
+            border-radius: 20px;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        }
+        input{
+            width: 400px;
+        }
+
+    </style>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madeiras </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+</head>
+<body>
+    <form action="" method = "POST" id="my_form">
+        <h3 style="text-align: center">Pesquisa Madeiras</h3>
+        {% csrf_token %}
+        {% for field in form %}
+
+        <label class="form-label">{{field.label}}</label>
+        
+        {{field}}
+        <br>
+        {% endfor %}
+
+        <input type="submit" value="Buscar" class ="btn btn-primary">
+    </form>
+    
+    <script>
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        let nome_popular_field = document.getElementById("id_cod_nome_popular")
+        console.log('Success linha 66,persons.html:', nome_popular_field);
+       
+        let madeira_field = document.getElementById("id_cod_madeira")
+        console.log('Success linha 68,persons.html:', madeira_field);
+
+        nome_popular_field.addEventListener("change", pickState)
+        console.log('Success linha 71,persons.html:', nome_popular_field);
+
+        function pickState(e){
+            nome_popular_field = e.target.value
+            console.log('Success linha 75,persons.html:', nome_popular_field);
+            console.log('Success linha 76,persons.html:', e.target.nome_popular );
+
+            const data = { user_id: nome_popular_field}
+            let url = " {% url 'wood' %} "
+            console.log('Success linha 79,persons.html:', url);
+
+            fetch(url, {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success linha 90,persons.html:', data.nome_popular);
+                console.log('Success:', data[0]['cod_madeira']);
+            
+            madeira_field.innerHTML = `<option value = "" selected>---------------</option>`
+            for(let i = 0; i<data.length; i++){
+                console.log('Success linha 95,persons.html:', data.length);
+                console.log('Success linha 96,persons.html:', i);
+                
+                
+                console.log('Success linha 97,persons.html:', data[i]['cod_madeira']);
+                console.log('Success linha 98,persons.html:', data[i]['nome_popular']);
+                madeira_field.innerHTML += `<option value = "${data[i]["cod_madeira"]}" selected>${data[i]["nome_popular"]}</option>`
+
+            }
+        })
+        .catch((error) => {
+            console.log('Success linha 106,persons.html:', error);
+            console.error('Error:', error);
+        });
+
+        }
+
+        let input = document.getElementById("id")
+        let select = document.getElementsByTagName("select")
+        console.log('Success linha 114,persons.html:', select);
+              
+        input.classList.add("form-control")
+        console.log('Success linha 119,persons.html:', select.length);
+         
+        for(let i = 0; i <select.length; i++){
+            console.log('Success linha 122,persons.html:', select[i].classList.add("form-select"));
+            select[i].classList.add("form-select")
+          
+        }
+    </script>
+
+
+
+</body>
+</html>
