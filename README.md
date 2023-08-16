@@ -7,10 +7,10 @@
 1. Instale o Django
 `pip install django`
 
-1. Garanta que o django foi instalado
+2. Garanta que o django foi instalado
 `django-admin --version`
 
-1. Execute o projeto
+3. Execute o projeto
 `python3 xiloteca/manage.py runserver`
 
 ## Linux/Mac
@@ -20,8 +20,8 @@
 1. Instale o Django
 `pip install django`
 
-1. Garanta que o django foi instalado
+2. Garanta que o django foi instalado
 `django-admin --version`
 
-1. Execute o projeto
+3. Execute o projeto
 `python3 xiloteca/manage.py runserver`
