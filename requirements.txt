@@ -82,11 +82,4 @@ typing-extensions==4.7.0 ; python_version >= "3.10" and python_version < "3.11" 
 tzdata==2023.3 ; python_version >= "3.10" and python_version < "4.0" and sys_platform == "win32" \
     --hash=sha256:11ef1e08e54acb0d4f95bdb1be05da659673de4acbd21bf9c69e94cc5e907a3a \
     --hash=sha256:7e65763eef3120314099b6939b5546db7adce1e7d6f2e179e3df563c70511eda
-mysqlclient==2.2.0 ;
-    --hash=sha256:ceebae7b8927a3227e5303cf5e0f1f7b34bb542ad7250ac03fbcde36ec2f1508 \
-    --hash=sha256:189b1af95d661151e054cea10c91b3d754e4de4d3fecfb074c1fb29476f7167b \
-    --hash=sha256:b282a90303ef126c7c16004698c5efb0cb0cc4e2ae13aa519fb21e20672c2848 \
-    --hash=sha256:c0a6de0ac19a792bf661df8d4e7202b04d3c51675475c618002fca3f3d4932de \
-    --hash=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 \
-    --hash=sha256:f6ee5ace085aae36017dd22b64c6fb62d61618fa92db50519910678245c29b39 \
-    --hash=sha256:6db1b78ef08015f962b533774601d002f616f4e9ff1c76f8949b6fc740c7b440
+mysqlclient==2.2.0 --hash=sha256:04368445f9c487d8abb7a878e3d23e923e6072c04a6c320f9e0dc8a82efba14e
