@@ -81,5 +81,5 @@ typing-extensions==4.7.0 ; python_version >= "3.10" and python_version < "3.11" 
     --hash=sha256:935ccf31549830cda708b42289d44b6f74084d616a00be651601a4f968e77c82
 tzdata==2023.3 ; python_version >= "3.10" and python_version < "4.0" and sys_platform == "win32" \
     --hash=sha256:11ef1e08e54acb0d4f95bdb1be05da659673de4acbd21bf9c69e94cc5e907a3a \
-    --hash=sha256:7e65763eef3120314099b6939b5546db7adce1e7d6f2e179e3df563c70511eda
-mysqlclient==2.1.1 --hash=sha256:04368445f9c487d8abb7a878e3d23e923e6072c04a6c320f9e0dc8a82efba14e
+    --hash=sha256:7e65763eef312031409git 9b6939b5546db7adce1e7d6f2e179e3df563c70511eda
+mysqlclient==2.1.1 --hash=sha256:828757e419fb11dd6c5ed2576ec92c3efaa93a0f7c39e263586d1ee779c3d782
