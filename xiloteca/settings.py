@@ -79,7 +79,15 @@ WSGI_APPLICATION = 'xiloteca.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
+if os.getenv('GITHUB_ACTIONS') is not None:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
+    DATABASES = {
     'default': {
                 'ENGINE': 'django.db.backends.mysql',
                 'NAME': 'xiloteca',
@@ -87,8 +95,8 @@ DATABASES = {
                 'PASSWORD': 'xiloteca',
                 'HOST': '34.139.74.112',
                 'PORT': 3306,
-            }
-}
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -157,14 +165,14 @@ def decode(variable):
         print('Error decoding JSON, code %d', json.decoder.JSONDecodeError)
 
 # Import some Platform.sh settings from the environment.
-if (os.getenv('PLATFORM_APPLICATION_NAME') is not None):
+if os.getenv('PLATFORM_APPLICATION_NAME') is not None:
     DEBUG = False
-    if (os.getenv('PLATFORM_APP_DIR') is not None):
+    if os.getenv('PLATFORM_APP_DIR') is not None:
         STATIC_ROOT = os.path.join(os.getenv('PLATFORM_APP_DIR'), 'static')
-    if (os.getenv('PLATFORM_PROJECT_ENTROPY') is not None):
+    if os.getenv('PLATFORM_PROJECT_ENTROPY') is not None:
         SECRET_KEY = os.getenv('PLATFORM_PROJECT_ENTROPY')
     # Database service configuration, post-build only.
-    if (os.getenv('PLATFORM_ENVIRONMENT') is not None):
+    if os.getenv('PLATFORM_ENVIRONMENT') is not None:
         platformRelationships = decode(os.getenv('PLATFORM_RELATIONSHIPS'))
         db_settings = platformRelationships[PLATFORMSH_DB_RELATIONSHIP][0]
         DATABASES = {
