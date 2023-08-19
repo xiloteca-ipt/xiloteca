@@ -3,12 +3,6 @@ from . import models
 from django.apps import apps
 
 class ModelsTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        print("setUpTestData: Run once to set up non-modified data for all class methods.")
-
-    def setUp(self):
-        print("setUp: Run once for every test method to setup clean data.")
 
     def test_madeira_names_are_properly_converted_to_string(self):
         #arrange

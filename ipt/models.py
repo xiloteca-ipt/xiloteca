@@ -231,6 +231,9 @@ class MadeiraNomePopular(models.Model):
     nome_popular = models.CharField(db_column='Nome_Popular', max_length=100, blank=True, null=True)  # Field name made lowercase.
     ind_nome_principal = models.IntegerField(db_column='Ind_Nome_Principal', blank=True, null=True)  # Field name made lowercase.
 
+    def __str__(self):
+        return str(self.nome_popular)
+
     class Meta:
         managed = True
         db_table = 'Madeira_Nome_Popular'
