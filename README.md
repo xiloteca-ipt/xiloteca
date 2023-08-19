@@ -34,4 +34,6 @@ You can find tasks for this project in the following board: https://trello.com/b
 You should fork the project, make changes and then open a pull request to our team. New code must be covered with unit tests.
 
 # Pipeline execution:
+Commits to the `main` branch trigger a new deployment to production.
+
 You can check pipelines execution in the following link: https://github.com/xiloteca-ipt/xiloteca/actions/workflows/django.yml (access required)
