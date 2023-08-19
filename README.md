@@ -1,27 +1,37 @@
-#### Main brach deployment: https://main-bvxea6i-itpsiv7aiftd6.us.platformsh.site/
+#### Main brach deployment: https://main-bvxea6i-vbncvvoi4ntug.us-4.platformsh.site/
 
 #
-# Como executar:
+# How to execute:
 
-## Windows
-1. Instale o Django
-`pip install django`
+1. Create Python virtual envioronment with `python3 -m venv venv` then activate it `source venv/bin/activate`
 
-2. Garanta que o django foi instalado
+1. Install dependencies `pip install -r requirements.txt`
+
+2. Check Django version
 `django-admin --version`
 
-3. Execute o projeto
+3. Execute the project
 `python3 xiloteca/manage.py runserver`
 
-## Linux/Mac
-1. Crie um ambiente virtual
-`python3 -m venv venv` e depois ative-o `source venv/bin/activate`
 
-1. Instale o Django
-`pip install django`
+# How to test:
 
-2. Garanta que o django foi instalado
-`django-admin --version`
+1. Run the following command:
+`python3 xiloteca/manage.py test`
 
-3. Execute o projeto
-`python3 xiloteca/manage.py runserver`
+You can add more details to the execution log by adding the parameter `--verbosity=VERBOSITY_LEVEL`.
+Verbosity levels are: 0=minimal output, 1=normal output, 2=verbose output, 3=very verbose output.
+
+
+# Infrastructure details:
+
+The website is hosted in an Platform.sh deployment site. The database is a GCP MySql database, hosted in Google Cloud Platform.
+
+
+# Contribution guide:
+You can find tasks for this project in the following board: https://trello.com/b/aTcjwDVh/kanban
+
+You should fork the project, make changes and then open a pull request to our team. New code must be covered with unit tests.
+
+# Pipeline execution:
+You can check pipelines execution in the following link: https://github.com/xiloteca-ipt/xiloteca/actions/workflows/django.yml (access required)
