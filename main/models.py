@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import date
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 
 class Banner(models.Model):
@@ -403,3 +404,4 @@ class DjangoSession(models.Model):
     class Meta:
         managed = False
         db_table = 'django_session'
+
