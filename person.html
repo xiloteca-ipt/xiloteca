@@ -28,6 +28,8 @@
         input {
             width: 400px;
         }
+
+    
     </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -39,7 +41,7 @@
 </head>
 
 <body>
-    <form action="" method="POST" id="my_form">
+    <form action="/" method="POST" id="my_form">
         <h3 style="text-align: center">Pesquisa Madeiras</h3>
         {% csrf_token %}
         {% for field in form %}
@@ -50,7 +52,17 @@
         <br>
         {% endfor %}
 
-        <input type="submit" value="Buscar" class="btn btn-primary">
+        <button
+            type="submit" onclick="pickState(e)" class="btn btn-primary">Buscar
+        </button>
+        <script>
+            function show(){
+                const btn = document.getElementById("id_cod_nome_popular");
+                const optionText = btn.options[select.selectedIndex].text;
+                const optionValue = btn.options[select.selectedIndex].value;
+                alert("Valor Selecionado: "+ optionText+"  ID Selecionado: " + optionValue );
+            }
+        </script>
     </form>
 
     <script>
@@ -72,21 +84,14 @@
         }
         const csrftoken = getCookie('csrftoken');
 
-
         let nome_popular_field = document.getElementById("id_cod_nome_popular")
-        // let nome_popular_field = document.getElementById("id")
-        console.log('Success linha 66,persons.html:', nome_popular_field);
-
-        let madeira_field = document.getElementById("id_cod_madeira")
-        console.log('Success linha 68,persons.html:', madeira_field);
-
+       //let madeira_field = document.getElementById("id_cod_madeira")
         nome_popular_field.addEventListener("change", pickState)
-        console.log('Success linha 71,persons.html:', nome_popular_field);
-
+ 
         function pickState(e) {
             nome_popular_field = e.target.value
-            console.log('Success linha 87,persons.html:', nome_popular_field);
-
+            console.log('Success apos pickstate:'+nome_popular_field);
+         /*
             const data = { user_id: nome_popular_field }
             let url = " {% url 'wood' %} "
 
@@ -100,7 +105,6 @@
             })
                 .then(response => response.json())
                 .then(data => {
-
                     madeira_field.innerHTML = `<option value = "" selected>---------------</option>`
                     for (let i = 0; i < data.length; i++) {
                         madeira_field.innerHTML += `<option value = "${data[i]["cod_madeira"]}" selected>${data[i]["nome_popular"]}</option>`
@@ -109,21 +113,16 @@
                 .catch((error) => {
                     console.error('Error:', error);
                 });
-
+                */
         }
-
+    
         let input = document.getElementById("id_cod_nome_popular")
-        // let input = document.getElementById("id")
         let select = document.getElementsByTagName("select")
-        console.log('Success linha 114,persons.html:', select);
-
+      
         input.classList.add("form-control")
-        console.log('Success linha 119,persons.html:', select.length);
-
+      
         for (let i = 0; i < select.length; i++) {
-            console.log('Success linha 122,persons.html:', select[i].classList.add("form-select"));
-            select[i].classList.add("form-select")
-
+           select[i].classList.add("form-select")
         }
 
     </script>
