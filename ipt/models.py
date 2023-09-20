@@ -103,6 +103,8 @@ class Madeira(models.Model):
     desc_obs_nome_cientifico = models.TextField(db_column='Desc_Obs_Nome_Cientifico', blank=True, null=True)  # Field name made lowercase.
     cod_status_madeira = models.CharField(db_column='Cod_Status_Madeira', max_length=1, blank=True, null=True)  # Field name made lowercase.
 
+    def __str__(self):
+        return str(self.cod_madeira)
     class Meta:
         managed = True
         db_table = 'Madeira'
@@ -289,3 +291,35 @@ class TipoOcorrencia(models.Model):
     class Meta:
         managed = True
         db_table = 'Tipo_Ocorrencia'
+
+
+# Managed fields for search
+
+class MadeiraBusca(models.Model):
+    cod_madeira = models.IntegerField(db_column='Cod_Madeira', primary_key=True)  # Field name made lowercase. The composite primary key (Cod_Madeira, Cod_Nome_Popular) found, that is not supported. The first column is selected.
+    cod_nome_popular = models.IntegerField(db_column='Cod_Nome_Popular')  # Field name made lowercase.
+    nome_popular = models.CharField(db_column='Nome_Popular', max_length=100, db_collation='Latin1_General_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    ind_nome_principal = models.IntegerField(db_column='Ind_Nome_Principal', blank=True, null=True)  # Field name made lowercase.
+
+    def __str__(self):
+        return str(self.nome_popular)
+    class Meta:
+        managed = False
+        db_table = 'Madeira_Nome_Popular'
+
+class Busca(models.Model):
+    Nome_popular =  models.ForeignKey(MadeiraBusca, on_delete=models.CASCADE)
+    class Meta:
+        managed = False
+
+class Consulta(models.Model):
+    cod_madeira = models.IntegerField(db_column='Cod_Madeira', primary_key=True)  # Field name made lowercase. The composite primary key (Cod_Madeira, Cod_Nome_Popular) found, that is not supported. The first column is selected.
+    nome_popular = models.CharField(db_column='Nome_Popular', max_length=100, db_collation='Latin1_General_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    cod_status_madeira = models.CharField(db_column='Cod_Status_Madeira', max_length=1, db_collation='Latin1_General_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    desc_obs_madeira = models.TextField(db_column='Desc_Obs_Madeira', db_collation='Latin1_General_CI_AS', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
+    desc_obs_nome_cientifico = models.TextField(db_column='Desc_Obs_Nome_Cientifico', db_collation='Latin1_General_CI_AS', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
+    desc_obs_ocorrencia = models.TextField(db_column='Desc_Obs_Ocorrencia', db_collation='Latin1_General_CI_AS', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
+    
+    class Meta:
+        managed = False
+        db_table = 'Consult_Resultado'
