@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>/*! Select2 4.1.0-rc.0 | https://github.com/select2/select2/blob/master/LICENSE.md */
+    !function(){if(jQuery&&jQuery.fn&&jQuery.fn.select2&&jQuery.fn.select2.amd)var e=jQuery.fn.select2.amd;e.define("select2/i18n/pt-BR",[],function(){return{errorLoading:function(){return"Os resultados não puderam ser carregados."},inputTooLong:function(e){var n=e.input.length-e.maximum,r="Apague "+n+" caracter";return 1!=n&&(r+="es"),r},inputTooShort:function(e){return"Digite "+(e.minimum-e.input.length)+" ou mais caracteres"},loadingMore:function(){return"Carregando mais resultados…"},maximumSelected:function(e){var n="Você só pode selecionar "+e.maximum+" ite";return 1==e.maximum?n+="m":n+="ns",n},noResults:function(){return"Nenhum resultado encontrado"},searching:function(){return"Buscando…"},removeAllItems:function(){return"Remover todos os itens"},removeItem:function(){return"Remover item"},search:function(){return"Buscar"}}}),e.define,e.require}();</script>
+<head>
+    <style>
+        body {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #my_form {
+            width: auto;
+            padding: 40px 40px;
+            border-radius: 20px;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        }
+
+        input {
+            width: 400px;
+        }
+
+    
+    </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madeiras </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <form action="/" method="POST" id="my_form">
+        <h4 style="text-align: center">Pesquisar madeiras</h4>
+        {% csrf_token %}
+        {% for field in form %}
+
+        <span>Digite o {{field.label}}</span>
+
+        {{field}}
+        <br>
+        {% endfor %}
+
+        <button     
+            type="button" onclick=irParaNovoTemplate() class="btn btn-primary">Buscar
+        </button>
+        <button
+            type="button" onclick="history.back()"  class="btn btn-secondary">Voltar
+        </button>
+        <script>
+            function irParaNovoTemplate(){
+                const select = document.getElementById("id_Nome_popular");
+                const nome_popular_field = select.value;
+                window.location.href = "{% url 'ficha'  %}?id=" +nome_popular_field ;
+            }
+        </script>
+    </form>
+
+    <script>
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        let nome_popular_field = document.getElementById("id_Nome_popular")
+        nome_popular_field.addEventListener("change", pickState)
+ 
+        
+        function pickState(e) {
+            nome_popular_field = e.target.value
+        
+        let input = document.getElementById("id_Nome_popular")
+        let select = document.getElementsByTagName("select")
+      
+        input.classList.add("form-control")
+      
+        for (let i = 0; i < select.length; i++) {
+           select[i].classList.add("form-select")
+        }
+    }
+
+    </script>
+
+
+
+</body>
+<script>
+    $(document).ready(function () {
+        $('#id_Nome_popular').select2({
+            placeholder: 'Digite um nome',
+            language: "pt-BR"
+        }).on('select2:select', function (e) {
+            pickState(e)
+        });
+    });
+</script>
+
+</html>
