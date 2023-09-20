@@ -26,3 +26,7 @@ admin.site.register(Ocorrencia)
 admin.site.register(Referencia)
 admin.site.register(TipoFoto)
 admin.site.register(TipoOcorrencia)
+
+admin.site.site_header = "Administração Portal Xiloteca"
+admin.site.site_title = "Administração Portal Xiloteca"
+admin.site.index_title = "Boas-vindas ao portal de adminstração da Xiloteca"
