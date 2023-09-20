@@ -15,6 +15,11 @@ import sys
 import json
 import base64
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
+
+LANGUAGE_CODE = 'pt-BR'
+USE_I18N = True
+USE_L10N = True
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -54,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'xiloteca.urls'
