@@ -19,7 +19,7 @@ class ModelsTest(TestCase):
 
     def test_base_template_is_present(self):
         #arrange
-        file_path = 'ipt/templates/base.html'
+        file_path = 'ipt/templates/index.html'
 
         #act
         file = None
